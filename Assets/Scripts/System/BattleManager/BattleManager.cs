@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public enum BattleInputMode
 {
+    Deploy,
     Idle,
     Skill,
     Move

@@ -19,6 +19,9 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     {
         switch(currentMode)
         {
+            case BattleInputMode.Deploy:
+                HandleInputDeploy();
+                break;
             case BattleInputMode.Idle:
                 HandleInputIdle();
                 break;
@@ -28,6 +31,12 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                 break;
         }
     }
+
+    public void HandleInputDeploy()
+    {
+
+    }
+
     public void HandleInputIdle()
     {
         if (Input.GetMouseButtonDown(0))

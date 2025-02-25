@@ -1,9 +1,14 @@
 using UnityEngine;
 
+
 public class Tile : MonoBehaviour
 {
+    [Header("Tile Data")]
+    public TileData tileData;
+
     [Header("Tile Attribute")]
     public bool movable;
+    public TileType type;
     public int moveCost;
 
     [SerializeField] private GameObject objectOnTile = null;
@@ -20,6 +25,7 @@ public class Tile : MonoBehaviour
         originalColor = mesh.material.color;
         movableColor = Color.blue;
         nonMovableColor = Color.red;
+        TypeToCost();
     }
 
     private void Start()
@@ -50,5 +56,24 @@ public class Tile : MonoBehaviour
     public void HighlightNonMovable()
     {
         mesh.material.color = nonMovableColor;
+    }
+
+    void TypeToCost()
+    {
+        switch (type)
+        {
+            case TileType.Flat:
+                moveCost = 1;
+                break;
+            case TileType.Rough:
+                moveCost = 2;
+                break;
+            case TileType.Harsh:
+                moveCost = 3;
+                break;
+            case TileType.Impassable:
+                moveCost = 65535;
+                break;
+        }  
     }
 }

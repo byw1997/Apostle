@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum CharacterType
+{
+    Player,
+    Companion,
+    Enemy
+}
+
 public class Character : MonoBehaviour
 {
     [Header("Stat")]

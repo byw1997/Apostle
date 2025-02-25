@@ -15,7 +15,6 @@ public class BattleGameState : GameState
 
     public override void UpdateState()
     {
-        Debug.Log("Current State = Battle");
         inputManager.HandleInput(GState.Battle);
     }
 }
