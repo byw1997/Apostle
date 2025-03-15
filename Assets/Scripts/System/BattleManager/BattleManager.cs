@@ -13,6 +13,7 @@ public class BattleManager : MonoBehaviour
 
     private BattleInputHandler battleInputHandler;
 
+    public List<GameObject> playerCharactersOnBattle = new List<GameObject>();
     private List<Character> charactersOnBattle = new List<Character>();
 
     private Skill selectedSkill = null;
@@ -23,14 +24,15 @@ public class BattleManager : MonoBehaviour
         battleInputHandler = GetComponent<BattleInputHandler>();
     }
 
-    private void Start()
-    {
-        currentMode = BattleInputMode.Idle;
-    }
-
     public void HandleInput()
     {
         battleInputHandler.HandleInput(currentMode);
+    }
+
+    public void InitializeBattle()
+    {
+        currentMode = BattleInputMode.Deploy;
+        battleInputHandler.StartDeployment(playerCharactersOnBattle);
     }
     
 }

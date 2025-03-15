@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour
     public bool movable;
     public TileType type;
     public int moveCost;
+    public bool deployable;
 
     [SerializeField] private GameObject objectOnTile = null;
     public Vector2Int gridPos;
@@ -75,5 +76,13 @@ public class Tile : MonoBehaviour
                 moveCost = 65535;
                 break;
         }  
+    }
+
+    public void Deploy(GameObject character)
+    {
+        GameObject characterInstance = Instantiate(character, transform.position, Quaternion.identity);
+        objectOnTile = characterInstance;
+        Character characterComponent = characterInstance.GetComponent<Character>();
+        characterComponent.gridPos = gridPos;
     }
 }

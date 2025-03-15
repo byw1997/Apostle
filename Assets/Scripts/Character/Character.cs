@@ -7,15 +7,48 @@ public enum CharacterType
     Enemy
 }
 
+public enum MoveType
+{
+    Orthogonal,
+    Diagonal
+}
+
+public enum EngagementType
+{
+    Orthogonal,
+    Diagonal
+}
+
+public enum ClassType
+{
+    Fighter,
+    Wizard,
+    Rogue,
+    Priest,
+    None
+}
+
 public class Character : MonoBehaviour
 {
     [Header("Stat")]
-    public int str { get; private set; }
-    public int dex { get; private set; }
-    public int con { get; private set; }
-    public int kno { get; private set; }
-    public int wis {  get; private set; }
-    public int luk {  get; private set; }
+    public int str;
+    public int dex;
+    public int con;
+    public int kno;
+    public int wis;
+    public int luk;
+    public int actionPoint;
 
     public Vector2Int gridPos;
+
+    public CharacterType type;
+
+    [Header("Range")]
+    public int EngageRange;
+    public MoveType moveType;
+    public EngagementType engagementType;
+
+    [Header("Class")]
+    public ClassType mainClass;
+    public ClassType subClass;
 }

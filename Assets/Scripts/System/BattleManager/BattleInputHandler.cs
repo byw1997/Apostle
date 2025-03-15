@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 {
@@ -10,6 +12,8 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         Enemy
     }
     private BattleManager battleManager;
+    public List<GameObject> charactersToDeploy = new List<GameObject>();
+    private int currentDeployIndex;
     void Awake()
     {
         battleManager = GetComponent<BattleManager>();
@@ -32,9 +36,35 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         }
     }
 
+    public void StartDeployment(List<GameObject> playerCharactersOnBattle)
+    {
+        charactersToDeploy = playerCharactersOnBattle;
+        currentDeployIndex = 0;
+    }
+
     public void HandleInputDeploy()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
 
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            LayerMask tileLayer = LayerMask.GetMask("Tile");
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayer))
+            {
+                Tile tile = hit.collider.gameObject.GetComponent<Tile>();
+
+                if (tile)
+                {
+                    tile.Deploy(charactersToDeploy[currentDeployIndex++]);
+                }
+            }
+            if (currentDeployIndex >= charactersToDeploy.Count)
+            {
+                Transition(BattleInputMode.Idle);
+            }
+        }
     }
 
     public void HandleInputIdle()
@@ -68,6 +98,9 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     }
 
-
+    public void Transition(BattleInputMode nextMode)
+    {
+        battleManager.currentMode = nextMode;
+    }
 
 }

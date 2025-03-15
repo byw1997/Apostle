@@ -192,6 +192,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3449145337809569169, guid: f451abb5c347ca54883f7a23da6fda71, type: 3}
   m_PrefabInstance: {fileID: 439038}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &38829631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 38829632}
+  - component: {fileID: 38829633}
+  m_Layer: 0
+  m_Name: TestFloorGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &38829632
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38829631}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &38829633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38829631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22090be919c3e0d4193c739c1f755914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorPrefab: {fileID: 1583358907847966039, guid: f451abb5c347ca54883f7a23da6fda71, type: 3}
 --- !u!1 &66155041 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1583358907847966039, guid: f451abb5c347ca54883f7a23da6fda71, type: 3}
@@ -391,9 +436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &126795751
@@ -598,6 +645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
+  playerCharactersOnBattle: []
 --- !u!114 &308424485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,6 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8d11503c992d464aa7efb2797cac6d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charactersToDeploy: []
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,9 +934,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &424291022 stripped
@@ -907,9 +958,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &440395661
@@ -1002,9 +1055,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &498839369
@@ -1097,9 +1152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &509265941
@@ -1192,9 +1249,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &510790865
@@ -1287,9 +1346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &535184808
@@ -1382,9 +1443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &553782161
@@ -1477,9 +1540,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &561979522
@@ -1655,9 +1720,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &655365369 stripped
@@ -1677,9 +1744,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &715526524
@@ -1809,6 +1878,8 @@ MonoBehaviour:
   battleState: {fileID: 722003980}
   dialogueState: {fileID: 722003979}
   menuState: {fileID: 722003978}
+  battleManager: {fileID: 308424484}
+  characterManager: {fileID: 1928367144}
 --- !u!114 &722003978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1848,6 +1919,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1141166610}
+  battleManager: {fileID: 308424484}
+  characterManager: {fileID: 1928367144}
 --- !u!114 &722003981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1964,9 +2037,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &789657804
@@ -2054,9 +2129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &790298262
@@ -2149,9 +2226,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &832575517
@@ -2293,9 +2372,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &843647549
@@ -2388,9 +2469,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &857002418
@@ -2483,9 +2566,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &925319739
@@ -2578,9 +2663,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &929201467
@@ -2673,9 +2760,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &987575572
@@ -2768,9 +2857,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1011931491
@@ -2863,9 +2954,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1031197103 stripped
@@ -2963,9 +3056,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1038245463
@@ -3186,9 +3281,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1227486516 stripped
@@ -3213,9 +3310,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1250482415
@@ -3303,9 +3402,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1279015304
@@ -3398,9 +3499,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1354702453
@@ -3488,9 +3591,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1371056072 stripped
@@ -3588,9 +3693,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1422102934 stripped
@@ -3610,9 +3717,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1444424038
@@ -3700,9 +3809,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1463862312
@@ -3795,9 +3906,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1503628764
@@ -3885,9 +3998,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1606132449
@@ -3980,9 +4095,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1654404909
@@ -4075,9 +4192,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!4 &1674930152 stripped
@@ -4170,9 +4289,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1735757974
@@ -4265,9 +4386,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1759079405
@@ -4360,9 +4483,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1779361194
@@ -4455,9 +4580,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1783509374
@@ -4550,9 +4677,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1868750824 stripped
@@ -4572,9 +4701,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1910235240
@@ -4667,9 +4798,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1912306732
@@ -4757,9 +4890,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1921340574
@@ -4847,9 +4982,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1928053571
@@ -4942,9 +5079,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1928367142
@@ -4956,6 +5095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1928367143}
+  - component: {fileID: 1928367144}
   m_Layer: 0
   m_Name: CharacterManager
   m_TagString: Untagged
@@ -4978,6 +5118,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1928367144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928367142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b74fc1841e038b548a3b0d24681f28b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCharacter: {fileID: 6973012286206505546, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
+  activeCompanionCharacters: []
 --- !u!1001 &1954830738
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5063,9 +5217,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &1961185114
@@ -5158,9 +5314,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &1990772442 stripped
@@ -5180,9 +5338,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &2018969948
@@ -5275,9 +5435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &2097001566
@@ -5295,7 +5457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2097001567
 Transform:
   m_ObjectHideFlags: 0
@@ -5449,9 +5611,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &2111044384
@@ -5544,9 +5708,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &2116685529
@@ -5639,9 +5805,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1 &2126561876 stripped
@@ -5661,9 +5829,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
 --- !u!1001 &2138388384
@@ -5756,68 +5926,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a79f72cdfba504b9ed4dd007e600e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileData: {fileID: 0}
   movable: 1
   type: 0
   moveCost: 1
+  deployable: 0
   objectOnTile: {fileID: 0}
   gridPos: {x: 0, y: 0}
---- !u!1001 &5760328442363971267
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868332865281171535, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6973012286206505546, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 55eac9e29fa593d4980f76126c0c3cfb, type: 3}
 --- !u!1001 &5767770462926840553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5893,10 +6008,10 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 5760328442363971267}
-  - {fileID: 2097001567}
   - {fileID: 722003976}
   - {fileID: 1141166609}
   - {fileID: 308424483}
   - {fileID: 114978022}
   - {fileID: 1928367143}
+  - {fileID: 38829632}
+  - {fileID: 2097001567}
