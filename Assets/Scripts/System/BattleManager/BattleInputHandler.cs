@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 {
@@ -14,6 +15,9 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     private BattleManager battleManager;
     public List<GameObject> charactersToDeploy = new List<GameObject>();
     private int currentDeployIndex;
+    public TilemapManager tilemapManager;
+
+    Tile lastMouseOveredTile = null;
     void Awake()
     {
         battleManager = GetComponent<BattleManager>();
@@ -40,30 +44,39 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     {
         charactersToDeploy = playerCharactersOnBattle;
         currentDeployIndex = 0;
+        tilemapManager.HighlightAll(BattleInputMode.Deploy);
     }
 
     public void HandleInputDeploy()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(EventSystem.current.IsPointerOverGameObject())
         {
+            return;
+        }
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        LayerMask tileLayer = LayerMask.GetMask("Tile");
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            LayerMask tileLayer = LayerMask.GetMask("Tile");
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayer))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayer))
+        {
+            Tile tile = hit.collider.gameObject.GetComponent<Tile>();
+            
+            if (tile && tile.deployable)
             {
-                Tile tile = hit.collider.gameObject.GetComponent<Tile>();
-
-                if (tile)
+                if(lastMouseOveredTile != tile)
+                {
+                    lastMouseOveredTile = tile;
+                }
+                tile.Preview(charactersToDeploy[currentDeployIndex]);
+                if (Input.GetMouseButtonDown(0))
                 {
                     tile.Deploy(charactersToDeploy[currentDeployIndex++]);
                 }
             }
-            if (currentDeployIndex >= charactersToDeploy.Count)
-            {
-                Transition(BattleInputMode.Idle);
-            }
+        }
+        if (currentDeployIndex >= charactersToDeploy.Count)
+        {
+            Transition(BattleInputMode.Idle);
         }
     }
 

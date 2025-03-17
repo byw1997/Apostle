@@ -22,4 +22,12 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
+    public void HighlightAll(BattleInputMode bMode)
+    {
+        foreach(Tile tile in tileMap.Values)
+        {
+            tile.Highlight(bMode);
+        }
+    }
+
 }

@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
 
         gameStateContext = new GameStateContext(this);
 
+        
+    }
+
+    private void Start()
+    {
         gameStateContext.Transition(battleState);
     }
 

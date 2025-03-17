@@ -19,8 +19,19 @@ public class BattleManager : MonoBehaviour
     private Skill selectedSkill = null;
     private Character currentCharacter = null;
 
+    public static BattleManager Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         battleInputHandler = GetComponent<BattleInputHandler>();
     }
 

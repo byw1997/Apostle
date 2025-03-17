@@ -30,6 +30,8 @@ public enum ClassType
 
 public class Character : MonoBehaviour
 {
+    [Header("Character Info")]
+    public string characterName;
     [Header("Stat")]
     public int str;
     public int dex;
