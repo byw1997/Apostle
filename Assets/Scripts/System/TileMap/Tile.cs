@@ -19,19 +19,22 @@ public class Tile : MonoBehaviour
     private Color originalColor;
     private Color movableColor;
     private Color nonMovableColor;
-    private LineRenderer lineRenderer;
 
-    GameObject highlightOverlay;
+    [SerializeField] GameObject highlightOverlay;
+    [SerializeField] LineRenderer lineRenderer;
+
+    MeshRenderer highlightMesh;
+
+    [SerializeField] Material movableMaterial;
+    [SerializeField] Material nonMovableMaterial;
 
     private void Awake()
     {
         mesh = GetComponent<MeshRenderer>();
-        originalColor = mesh.material.color;
-        movableColor = Color.blue;
-        nonMovableColor = Color.red;
         TypeToCost();
 
-        lineRenderer = gameObject.GetComponent<LineRenderer>();
+        
+        lineRenderer = highlightOverlay.GetComponent<LineRenderer>();
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -39,13 +42,8 @@ public class Tile : MonoBehaviour
         lineRenderer.loop = true;
         lineRenderer.enabled = false;
 
-        highlightOverlay = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        highlightOverlay.transform.SetParent(transform);
-        highlightOverlay.transform.localPosition = Vector3.up * 0.01f; // Å¸ÀÏ À§¿¡ »ìÂ¦ ¶ç¿ì±â
-        highlightOverlay.transform.localRotation = Quaternion.Euler(90, 0, 0);
-        highlightOverlay.transform.localScale = new Vector3(1, 1, 1);
-        highlightOverlay.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Standard"));
-        highlightOverlay.GetComponent<MeshRenderer>().material.color = Color.clear;
+        highlightMesh = highlightOverlay.GetComponent<MeshRenderer>();
+
         highlightOverlay.SetActive(false);
     }
 
@@ -102,14 +100,14 @@ public class Tile : MonoBehaviour
 
     public void HighlightMovable()
     {
-        highlightOverlay.GetComponent<MeshRenderer>().material.color = movableColor;
+        highlightMesh.material = movableMaterial;
         highlightOverlay.SetActive(true);
         DrawOutline(true);
     }
 
     public void HighlightNonMovable()
     {
-        highlightOverlay.GetComponent<MeshRenderer>().material.color = nonMovableColor;
+        highlightMesh.material = nonMovableMaterial;
         highlightOverlay.SetActive(true);
         DrawOutline(true);
     }

@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 {
@@ -18,6 +19,8 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     public TilemapManager tilemapManager;
 
     Tile lastMouseOveredTile = null;
+
+    Pathfinder pathfinder = new Pathfinder();
     void Awake()
     {
         battleManager = GetComponent<BattleManager>();
@@ -49,7 +52,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     public void HandleInputDeploy()
     {
-        if(EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -76,12 +79,16 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         }
         if (currentDeployIndex >= charactersToDeploy.Count)
         {
-            Transition(BattleInputMode.Idle);
+            battleManager.EndDeploy();
         }
     }
 
     public void HandleInputIdle()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             // 화면 좌표를 월드 좌표로 변환
@@ -111,9 +118,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     }
 
-    public void Transition(BattleInputMode nextMode)
-    {
-        battleManager.currentMode = nextMode;
-    }
+    
 
 }

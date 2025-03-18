@@ -14,7 +14,7 @@ public class BattleManager : MonoBehaviour
     private BattleInputHandler battleInputHandler;
 
     public List<GameObject> playerCharactersOnBattle = new List<GameObject>();
-    private List<Character> charactersOnBattle = new List<Character>();
+    public List<Character> charactersOnBattle = new List<Character>();
 
     private Skill selectedSkill = null;
     private Character currentCharacter = null;
@@ -40,10 +40,29 @@ public class BattleManager : MonoBehaviour
         battleInputHandler.HandleInput(currentMode);
     }
 
+    public void Transition(BattleInputMode nextMode)
+    {
+        currentMode = nextMode;
+    }
+
     public void InitializeBattle()
     {
         currentMode = BattleInputMode.Deploy;
         battleInputHandler.StartDeployment(playerCharactersOnBattle);
     }
     
+    private void DeployEnemy()
+    {
+
+    }
+
+    public void EndDeploy()
+    {
+        foreach (GameObject character in playerCharactersOnBattle)
+        {
+            charactersOnBattle.Add(character.GetComponent<Character>());
+        }
+        DeployEnemy();
+        Transition(BattleInputMode.Idle);
+    }
 }
