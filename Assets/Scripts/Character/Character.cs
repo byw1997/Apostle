@@ -41,11 +41,13 @@ public class Character : MonoBehaviour
     public int luk;
     public int actionPoint;
 
+    public Tile tileUnderCharacter;
     public Vector2Int gridPos;
 
     public CharacterType type;
 
     [Header("Range")]
+    public int currentActionPoint;
     public int EngageRange;
     public MoveType moveType;
     public EngagementType engagementType;
@@ -53,4 +55,15 @@ public class Character : MonoBehaviour
     [Header("Class")]
     public ClassType mainClass;
     public ClassType subClass;
+
+    public void InitializeTurn()
+    {
+        currentActionPoint = actionPoint;
+    }
+
+    public void Move(Tile tile)
+    {
+        tileUnderCharacter.RemoveObjectOnTile();
+        tile.Deploy(gameObject);
+    }
 }

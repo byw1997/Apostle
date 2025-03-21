@@ -4,8 +4,8 @@ public enum BattleInputMode
 {
     Deploy,
     Idle,
-    Skill,
-    Move
+    Move,
+    Skill
 }
 public class BattleManager : MonoBehaviour
 {
@@ -16,8 +16,9 @@ public class BattleManager : MonoBehaviour
     public List<GameObject> playerCharactersOnBattle = new List<GameObject>();
     public List<Character> charactersOnBattle = new List<Character>();
 
+    private int currentCharacterIndex = 0;
     private Skill selectedSkill = null;
-    private Character currentCharacter = null;
+    public Character currentCharacter = null;
 
     public static BattleManager Instance { get; private set; }
 
@@ -42,18 +43,31 @@ public class BattleManager : MonoBehaviour
 
     public void Transition(BattleInputMode nextMode)
     {
+        switch (nextMode)
+        {
+            case BattleInputMode.Deploy:
+                break;
+            case BattleInputMode.Idle:
+                break;
+            case BattleInputMode.Move:
+                battleInputHandler.CalculateMovable();
+                break;
+            case BattleInputMode.Skill:
+                break;
+        }
         currentMode = nextMode;
     }
 
     public void InitializeBattle()
     {
+        currentCharacterIndex = 0;
         currentMode = BattleInputMode.Deploy;
         battleInputHandler.StartDeployment(playerCharactersOnBattle);
     }
     
     private void DeployEnemy()
     {
-
+        //Enemies will be added to the charactersOnBattle list
     }
 
     public void EndDeploy()
@@ -63,6 +77,19 @@ public class BattleManager : MonoBehaviour
             charactersOnBattle.Add(character.GetComponent<Character>());
         }
         DeployEnemy();
+        charactersOnBattle.Sort((a, b) => b.dex.CompareTo(a.dex));
         Transition(BattleInputMode.Idle);
     }
+
+    public void TurnForNextCharacter()
+    {
+        currentCharacter = charactersOnBattle[currentCharacterIndex];
+        currentCharacterIndex++;
+        currentCharacterIndex %= charactersOnBattle.Count;
+        if(currentCharacter.GetComponent<Player>() != null || currentCharacter.GetComponent<Companion>() != null)
+        {
+            Transition(BattleInputMode.Move);
+        }
+    }
+
 }

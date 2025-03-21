@@ -25,6 +25,7 @@ public class Tile : MonoBehaviour
 
     MeshRenderer highlightMesh;
 
+    [SerializeField] Material transparentMaterial;
     [SerializeField] Material movableMaterial;
     [SerializeField] Material nonMovableMaterial;
 
@@ -33,8 +34,6 @@ public class Tile : MonoBehaviour
         mesh = GetComponent<MeshRenderer>();
         TypeToCost();
 
-        
-        lineRenderer = highlightOverlay.GetComponent<LineRenderer>();
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -44,7 +43,7 @@ public class Tile : MonoBehaviour
 
         highlightMesh = highlightOverlay.GetComponent<MeshRenderer>();
 
-        highlightOverlay.SetActive(false);
+        DrawOutline(true);
     }
 
     private void Start()
@@ -82,7 +81,11 @@ public class Tile : MonoBehaviour
                 }
                 break;
             case BattleInputMode.Idle:
-                if (movable)
+                break;
+            case BattleInputMode.Skill:
+                break;
+            case BattleInputMode.Move:
+                if (movable && objectOnTile == null)
                 {
                     HighlightMovable();
                 }
@@ -91,31 +94,22 @@ public class Tile : MonoBehaviour
                     HighlightNonMovable();
                 }
                 break;
-            case BattleInputMode.Skill:
-                break;
-            case BattleInputMode.Move:
-                break;
         }
     }
 
     public void HighlightMovable()
     {
         highlightMesh.material = movableMaterial;
-        highlightOverlay.SetActive(true);
-        DrawOutline(true);
     }
 
     public void HighlightNonMovable()
     {
         highlightMesh.material = nonMovableMaterial;
-        highlightOverlay.SetActive(true);
-        DrawOutline(true);
     }
 
-    public void ResetHighlight()
+    public void Unhighlight()
     {
-        highlightOverlay.SetActive(false);
-        DrawOutline(false);
+        highlightMesh.material = transparentMaterial;
     }
 
     private void DrawOutline(bool enable)
@@ -170,11 +164,18 @@ public class Tile : MonoBehaviour
 
     }
 
+    public void RemoveObjectOnTile()
+    {
+        objectOnTile = null;
+    }
+
     public void Deploy(GameObject character)
     {
+        character.transform.position = transform.position;
         objectOnTile = character;
         Character characterComponent = character.GetComponent<Character>();
         characterComponent.gridPos = gridPos;
+        characterComponent.tileUnderCharacter = this;
     }
 
 }

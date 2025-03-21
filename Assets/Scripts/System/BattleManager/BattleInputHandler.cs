@@ -20,10 +20,14 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     Tile lastMouseOveredTile = null;
 
-    Pathfinder pathfinder = new Pathfinder();
+    Pathfinder pathfinder;
+
+    private Dictionary<Vector2Int, Pathfinder.Node> cachedReachableTiles = null;
+
     void Awake()
     {
         battleManager = GetComponent<BattleManager>();
+        pathfinder = new Pathfinder(tilemapManager.tileMap);
     }
 
     public void HandleInput(BattleInputMode currentMode)
@@ -37,8 +41,10 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                 HandleInputIdle();
                 break;
             case BattleInputMode.Skill:
+                HandleInputSkill();
                 break;
             case BattleInputMode.Move:
+                HandleInputMove();
                 break;
         }
     }
@@ -79,6 +85,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         }
         if (currentDeployIndex >= charactersToDeploy.Count)
         {
+            tilemapManager.UnhighlightAll();
             battleManager.EndDeploy();
         }
     }
@@ -88,6 +95,10 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
+        }
+        if(battleManager.currentCharacter == null)
+        {
+            battleManager.TurnForNextCharacter();
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -113,11 +124,49 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     }
 
-    public void HandleInputMove()
+    public void HandleInputMove()//입력 시 gridpos로 dict에서 검색해서 이동가능한지 파악. Idle로 전환 후 순차이동. 
     {
+        if (cachedReachableTiles == null)
+        {
+            CalculateMovable();
+        }
 
+        Assert.IsNotNull(cachedReachableTiles);
+        
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            LayerMask tileLayer = LayerMask.GetMask("Tile");
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayer))
+            {
+                Tile tile = hit.collider.gameObject.GetComponent<Tile>();
+                if (tile && cachedReachableTiles.ContainsKey(tile.gridPos))
+                {
+                    MoveCurrentCharacter(tile, cachedReachableTiles[tile.gridPos]);
+                }
+            }
+        }
     }
 
-    
+    public void CalculateMovable()
+    {
+        Dictionary<Vector2Int, Pathfinder.Node> reachableTiles = null;
+        reachableTiles = pathfinder.CalculateMoveRange(battleManager.currentCharacter, battleManager.currentCharacter.moveType);
+        Assert.IsNotNull(reachableTiles);
+        cachedReachableTiles = reachableTiles;
+        tilemapManager.HighlightAll(BattleInputMode.Move, reachableTiles);
+    }
+
+    private void MoveCurrentCharacter(Tile tile, Pathfinder.Node node)
+    {
+        battleManager.currentCharacter.Move(tile);
+        tilemapManager.UnhighlightAll();
+        cachedReachableTiles = null;
+    }
 
 }
