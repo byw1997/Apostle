@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2ae6fcc67dfc54c831f5cdac1bcbc5, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  skillID: 0
+  skillName: Normal Attack
+  skillMPCost: 0
+  skillAPCost: 000000000000000000000000
+  skillType: 0
+  skillTarget: 2
+  skillRangeType: 2
+  skillRange: 00000000
+  skillEffectType: 0
+  skillAreaType: 0
+  damageType: 0
+  skillEffectBaseValue:
+  - 0
+  skillEffectScaleValue:
+  - 1
+  skillEffectDuration: []
+  skillEffectChance: []
+  effectID: 0
+  skillDescription: 
+  FlavourText: 
+  skillIcon: {fileID: 0}

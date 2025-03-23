@@ -107,4 +107,10 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void SelectSkill(int i)
+    {
+        selectedSkill = currentCharacter.skillSet[i];
+        Transition(BattleInputMode.Skill);
+    }
+
 }

@@ -1,5 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
-
+using System.Collections.Generic;
 public enum CharacterType
 {
     Player,
@@ -33,6 +34,10 @@ public class Character : MonoBehaviour
     [Header("Character Info")]
     public string characterName;
     [Header("Stat")]
+    public int hp;
+    public int currentHp;
+    public int mp;
+    public int currentMp;
     public int str;
     public int dex;
     public int con;
@@ -55,6 +60,11 @@ public class Character : MonoBehaviour
     [Header("Class")]
     public ClassType mainClass;
     public ClassType subClass;
+
+    [Header("Skill")]
+    public Skill[] skillSet = new Skill[6];
+    public int[] skillLevel = new int[6];
+    public List<int> acquiredSkills = new List<int>();
 
     public void InitializeTurn()
     {
