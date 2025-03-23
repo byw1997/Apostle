@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour
     public int moveCost;
     public bool deployable;
 
-    [SerializeField] private GameObject objectOnTile = null;
+    public GameObject objectOnTile = null;
     public Vector2Int gridPos;
 
     private MeshRenderer mesh;

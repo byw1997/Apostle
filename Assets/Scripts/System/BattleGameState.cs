@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BattleGameState : GameState
 {
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private BattleManager battleManager;
     [SerializeField] private CharacterManager characterManager;
 
@@ -24,6 +25,7 @@ public class BattleGameState : GameState
     {
         battleManager.playerCharactersOnBattle.Add(characterManager.playerCharacter);
         battleManager.playerCharactersOnBattle.AddRange(characterManager.activeCompanionCharacters);
+        uiManager.ShowBattleUI();
         battleManager.InitializeBattle();
     }
 }

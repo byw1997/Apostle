@@ -61,9 +61,10 @@ public class Character : MonoBehaviour
         currentActionPoint = actionPoint;
     }
 
-    public void Move(Tile tile)
+    public void Move(Tile tile, Pathfinder.Node node)
     {
         tileUnderCharacter.RemoveObjectOnTile();
+        currentActionPoint -= node.cost;
         tile.Deploy(gameObject);
     }
 }

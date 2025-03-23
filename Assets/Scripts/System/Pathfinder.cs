@@ -32,7 +32,7 @@ public class Pathfinder
     public Dictionary<Vector2Int, Node> CalculateMoveRange(Character character, MoveType moveType)
     {
         Vector2Int startPos = character.gridPos;
-        int maxCost = character.actionPoint;
+        int maxCost = character.currentActionPoint;
         Dictionary<Vector2Int, Node> reachableTiles = new Dictionary<Vector2Int, Node>();
         Queue<Node> queue = new Queue<Node>();
 

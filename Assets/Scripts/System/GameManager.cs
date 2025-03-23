@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
 
     private GameStateContext gameStateContext;
 
-    [SerializeField] private BattleManager battleManager;
-    [SerializeField] private CharacterManager characterManager;
 
     public static GameManager Instance { get; private set; }
 

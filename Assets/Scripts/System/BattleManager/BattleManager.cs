@@ -83,10 +83,25 @@ public class BattleManager : MonoBehaviour
 
     public void TurnForNextCharacter()
     {
+        switch(currentMode)
+        {
+            case BattleInputMode.Move:
+                EndTurn();
+                break;
+            case BattleInputMode.Skill:
+                EndTurn();
+                break;
+        }
+        
+    }
+
+    public void EndTurn()
+    {
         currentCharacter = charactersOnBattle[currentCharacterIndex];
+        currentCharacter.InitializeTurn();
         currentCharacterIndex++;
         currentCharacterIndex %= charactersOnBattle.Count;
-        if(currentCharacter.GetComponent<Player>() != null || currentCharacter.GetComponent<Companion>() != null)
+        if (currentCharacter.GetComponent<Player>() != null || currentCharacter.GetComponent<Companion>() != null)
         {
             Transition(BattleInputMode.Move);
         }

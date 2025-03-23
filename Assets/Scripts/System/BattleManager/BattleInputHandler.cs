@@ -70,7 +70,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             Tile tile = hit.collider.gameObject.GetComponent<Tile>();
             
-            if (tile && tile.deployable)
+            if (tile && tile.deployable && tile.objectOnTile == null)
             {
                 if(lastMouseOveredTile != tile)
                 {
@@ -98,7 +98,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         }
         if(battleManager.currentCharacter == null)
         {
-            battleManager.TurnForNextCharacter();
+            battleManager.EndTurn();
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -126,6 +126,10 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     public void HandleInputMove()//입력 시 gridpos로 dict에서 검색해서 이동가능한지 파악. Idle로 전환 후 순차이동. 
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         if (cachedReachableTiles == null)
         {
             CalculateMovable();
@@ -133,10 +137,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
         Assert.IsNotNull(cachedReachableTiles);
         
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -164,7 +164,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     private void MoveCurrentCharacter(Tile tile, Pathfinder.Node node)
     {
-        battleManager.currentCharacter.Move(tile);
+        battleManager.currentCharacter.Move(tile, node);
         tilemapManager.UnhighlightAll();
         cachedReachableTiles = null;
     }
