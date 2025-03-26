@@ -22,6 +22,8 @@ public class BattleManager : MonoBehaviour
 
     public static BattleManager Instance { get; private set; }
 
+    public TilemapManager tilemapManager;
+
     private void Awake()
     {
         if (Instance == null)
@@ -43,6 +45,7 @@ public class BattleManager : MonoBehaviour
 
     public void Transition(BattleInputMode nextMode)
     {
+        tilemapManager.UnhighlightAll();
         switch (nextMode)
         {
             case BattleInputMode.Deploy:
@@ -109,8 +112,34 @@ public class BattleManager : MonoBehaviour
 
     public void SelectSkill(int i)
     {
-        selectedSkill = currentCharacter.skillSet[i];
-        Transition(BattleInputMode.Skill);
+        if (selectedSkill == currentCharacter.skillSet[i])
+        {
+            selectedSkill = null;
+            Transition(BattleInputMode.Move);
+        }
+        else
+        {
+            selectedSkill = currentCharacter.skillSet[i];
+            if (selectedSkill)
+            {
+                foreach(CustomRange range in selectedSkill.customRanges)
+                {
+                    Debug.Log(range.tilePositions.Count);
+                    foreach (Vector2Int pos in range.tilePositions)
+                    {
+                        Debug.Log(pos.x);
+                    }
+                }
+                Debug.Log(selectedSkill.customRanges.Length);
+                Transition(BattleInputMode.Skill);
+            }
+        }
+    }
+
+    public void UnSelectSkill()
+    {
+        selectedSkill = null;
+        Transition(BattleInputMode.Move);
     }
 
 }

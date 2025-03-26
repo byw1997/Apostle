@@ -71,7 +71,7 @@ public class Tile : MonoBehaviour
         switch (bMode)
         {
             case BattleInputMode.Deploy:
-                if (deployable)
+                if (deployable && objectOnTile == null)
                 {
                     HighlightMovable();
                 }

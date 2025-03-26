@@ -22,6 +22,19 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     Pathfinder pathfinder;
 
+    private KeyCode[] keyCodes = {
+        KeyCode.Alpha0,
+        KeyCode.Alpha1,
+        KeyCode.Alpha2,
+        KeyCode.Alpha3,
+        KeyCode.Alpha4,
+        KeyCode.Alpha5,
+        KeyCode.Alpha6,
+        KeyCode.Alpha7,
+        KeyCode.Alpha8,
+        KeyCode.Alpha9,
+    };
+
     private Dictionary<Vector2Int, Pathfinder.Node> cachedReachableTiles = null;
 
     void Awake()
@@ -56,6 +69,12 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         tilemapManager.HighlightAll(BattleInputMode.Deploy);
     }
 
+    public void NextCharacterDeployment()
+    {
+        currentDeployIndex++;
+        tilemapManager.HighlightAll(BattleInputMode.Deploy);
+    }
+
     public void HandleInputDeploy()
     {
         if (EventSystem.current.IsPointerOverGameObject())
@@ -79,7 +98,8 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                 tile.Preview(charactersToDeploy[currentDeployIndex]);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    tile.Deploy(charactersToDeploy[currentDeployIndex++]);
+                    tile.Deploy(charactersToDeploy[currentDeployIndex]);
+                    NextCharacterDeployment();
                 }
             }
         }
@@ -121,7 +141,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     
     public void HandleInputSkill()
     {
-
+        SelectSkillByShortcut();
     }
 
     public void HandleInputMove()//입력 시 gridpos로 dict에서 검색해서 이동가능한지 파악. Idle로 전환 후 순차이동. 
@@ -136,7 +156,9 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         }
 
         Assert.IsNotNull(cachedReachableTiles);
-        
+
+        SelectSkillByShortcut();
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -169,4 +191,14 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         cachedReachableTiles = null;
     }
 
+    private void SelectSkillByShortcut()
+    {
+        for (int i = 1; i <= 6; i++)
+        {
+            if (Input.GetKeyDown(keyCodes[i]))
+            {
+                battleManager.SelectSkill(i - 1);
+            }
+        }
+    }
 }

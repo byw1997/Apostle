@@ -66,6 +66,14 @@ public class Character : MonoBehaviour
     public int[] skillLevel = new int[6];
     public List<int> acquiredSkills = new List<int>();
 
+    [Header("Equipment")]
+    public Helmet helmet;
+    public Armor armor;
+    public Glove glove;
+    public Boots boots;
+    public Weapon MainHandweapon;
+    public Weapon SubHandWeapon;
+
     public void InitializeTurn()
     {
         currentActionPoint = actionPoint;

@@ -1905,6 +1905,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: 
+  hp: 20
+  currentHp: 0
+  mp: 10
+  currentMp: 0
   str: 10
   dex: 10
   con: 10
@@ -1912,13 +1916,30 @@ MonoBehaviour:
   wis: 10
   luk: 10
   actionPoint: 6
+  tileUnderCharacter: {fileID: 0}
   gridPos: {x: 1, y: 3}
   type: 0
+  currentActionPoint: 0
   EngageRange: 1
   moveType: 0
   engagementType: 0
   mainClass: 0
   subClass: 4
+  skillSet:
+  - {fileID: 11400000, guid: 3388d5aac0ffbe247b8bd2ae60119f0e, type: 2}
+  - {fileID: 11400000, guid: 0692aa0f509bedf4c9bf675110ec3160, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  skillLevel: 000000000000000000000000000000000000000000000000
+  acquiredSkills: 
+  helmet: {fileID: 0}
+  armor: {fileID: 0}
+  glove: {fileID: 0}
+  boots: {fileID: 0}
+  MainHandweapon: {fileID: 0}
+  SubHandWeapon: {fileID: 0}
 --- !u!1 &7018649799431940921
 GameObject:
   m_ObjectHideFlags: 0

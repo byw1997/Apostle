@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillID: 0
   skillName: Normal Attack
-  skillMPCost: 0
+  skillMPCost: 
   skillAPCost: 000000000000000000000000
   skillType: 0
   skillTarget: 2
   skillRangeType: 2
-  skillRange: 00000000
+  skillRanges: 00000000
+  customRanges: []
   skillEffectType: 0
+  skillTargetType: 0
   skillAreaType: 0
   damageType: 0
   skillEffectBaseValue:

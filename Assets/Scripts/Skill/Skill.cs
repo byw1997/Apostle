@@ -1,4 +1,9 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public enum SkillType
 {
@@ -26,7 +31,14 @@ public enum SkillRangeType
 {
     Orthogonal,
     Diagonal,
+    Circle,
     Weapon
+}
+
+public enum SkillTargetType
+{
+    Single,
+    Multiple
 }
 
 public enum SkillEffectType
@@ -37,10 +49,14 @@ public enum SkillEffectType
     Debuff
 }
 
+
+
 public enum SkillAreaType
 {
-    Single,
-    Multiple
+    Orthogonal,
+    Diagonal,
+    Circle,
+    Custom
 }
 
 public enum DamageType
@@ -54,7 +70,14 @@ public enum DamageType
     Ice,
     Shock,
     Holy,
-    Dark
+    Dark,
+    None
+}
+
+[System.Serializable]
+public class CustomRange
+{
+    public List<Vector2Int> tilePositions = new List<Vector2Int>();
 }
 
 [CreateAssetMenu(fileName = "Skill", menuName = "Scriptable Objects/Skill")]
@@ -63,13 +86,15 @@ public class Skill : ScriptableObject
     [Header("Skill Info")]
     public int skillID;
     public string skillName;
-    public int skillMPCost;
+    public int[] skillMPCost;
     public int[] skillAPCost;
     public SkillType skillType;
     public SkillTarget skillTarget;
     public SkillRangeType skillRangeType;
-    public int[] skillRange;
+    public int[] skillRanges;
+    public CustomRange[] customRanges;
     public SkillEffectType skillEffectType;
+    public SkillTargetType skillTargetType;
     public SkillAreaType skillAreaType;
     public DamageType damageType;
     public float[] skillEffectBaseValue;
@@ -80,4 +105,13 @@ public class Skill : ScriptableObject
     public string skillDescription;
     public string FlavourText;
     public Sprite skillIcon;
+
+    private void OnEnable()
+    {
+        if (customRanges == null)
+        {
+            customRanges = new CustomRange[0];
+        }
+    }
 }
+
