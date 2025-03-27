@@ -4,4 +4,5 @@ using UnityEngine;
 public class Effect : ScriptableObject
 {
     public int effectID;
+    public int duration;
 }

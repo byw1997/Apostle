@@ -141,11 +141,19 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     
     public void HandleInputSkill()
     {
+        if (battleManager.currentCharacter.status != CharacterStatus.Idle)
+        {
+            return;
+        }
         SelectSkillByShortcut();
     }
 
     public void HandleInputMove()//입력 시 gridpos로 dict에서 검색해서 이동가능한지 파악. Idle로 전환 후 순차이동. 
     {
+        if(battleManager.currentCharacter.status != CharacterStatus.Idle)
+        {
+            return;
+        }
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;

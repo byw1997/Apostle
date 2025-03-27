@@ -17,6 +17,7 @@ public class Pathfinder
             cost = c;
             path = new List<Vector2Int>(p);
         }
+
     }
 
     Dictionary<Vector2Int, Tile> tileMap;
@@ -72,7 +73,7 @@ public class Pathfinder
 
                 Tile nextTile = tileMap[nextPos];
 
-                if (!nextTile.movable)
+                if (!nextTile.movable || nextTile.objectOnTile)
                     continue;
 
                 if (!reachableTiles.ContainsKey(nextPos) || newCost < reachableTiles[nextPos].cost)

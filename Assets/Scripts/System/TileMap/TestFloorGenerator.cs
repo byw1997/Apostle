@@ -4,6 +4,8 @@ public class TestFloorGenerator : MonoBehaviour
 {
     public GameObject floorPrefab;
 
+    public GameObject[] enemyList;
+
     public int mapSize;
     void Awake()
     {

@@ -56,4 +56,5 @@ public abstract class Weapon : Equipment
     StatBonusType statBonusType;
     bool technical;
     DamageType damageType;
+    int accuracy;
 }
