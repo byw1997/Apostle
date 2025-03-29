@@ -18,6 +18,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     private int currentDeployIndex;
     public TilemapManager tilemapManager;
 
+
     Tile lastMouseOveredTile = null;
 
     Pathfinder pathfinder;

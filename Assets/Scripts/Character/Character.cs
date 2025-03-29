@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System.Collections;
 public enum CharacterType
 {
@@ -86,6 +86,10 @@ public class Character : MonoBehaviour
 
     public CharacterStatus status;
 
+    private Slider hpSlider;
+    private Slider mpSlider;
+    private Slider apSlider;
+
     public void InitializeBattle()
     {
         currentHp = hp;
@@ -93,6 +97,8 @@ public class Character : MonoBehaviour
         currentActionPoint = actionPoint;
         status = CharacterStatus.Idle;
     }
+
+    
 
     public void InitializeTurn()
     {
@@ -117,6 +123,7 @@ public class Character : MonoBehaviour
         Vector2Int currentPosition = tile.gridPos;
         Vector2Int nextPosition;
         currentActionPoint -= totalCost;
+        UpdateApSlider();
         for (int i = 1; i < path.Count; i++)
         {
             nextPosition = path[i];
@@ -144,5 +151,58 @@ public class Character : MonoBehaviour
         }
 
         transform.position = actualTargetPosition;
+    }
+
+    public void ConnectUI(Slider hpSlider, Slider mpSlider, Slider apSlider)
+    {
+        this.hpSlider = hpSlider;
+        this.mpSlider = mpSlider;
+        this.apSlider = apSlider;
+        hpSlider.maxValue = hp;
+        mpSlider.maxValue = mp;
+        apSlider.maxValue = actionPoint;
+        UpdateHpSlider();
+        UpdateMpSlider();
+        UpdateApSlider();
+    }
+
+    public void UpdateHpSlider()
+    {
+        if (hpSlider)
+        {
+            hpSlider.value = currentHp;
+        }
+    }
+
+    public void UpdateMpSlider()
+    {
+        if (mpSlider)
+        {
+            mpSlider.value = currentMp;
+        }
+    }
+
+    public void UpdateApSlider()
+    {
+        if (apSlider)
+        {
+            apSlider.value = currentActionPoint;
+        }
+    }
+
+    public void DisconnectUI()
+    {
+        if (hpSlider)
+        {
+            hpSlider = null;
+        }
+        if(mpSlider)
+        {
+            mpSlider = null;
+        }
+        if(apSlider)
+        {
+            apSlider = null;
+        }
     }
 }

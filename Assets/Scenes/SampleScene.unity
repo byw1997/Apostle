@@ -207,7 +207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &20716573
 Transform:
   m_ObjectHideFlags: 0
@@ -1272,6 +1272,7 @@ MonoBehaviour:
   charactersOnBattle: []
   currentCharacter: {fileID: 0}
   tilemapManager: {fileID: 114978023}
+  uiManager: {fileID: 1510724512}
 --- !u!114 &308424485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1286,6 +1287,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charactersToDeploy: []
   tilemapManager: {fileID: 114978023}
+--- !u!1 &323453129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 323453130}
+  - component: {fileID: 323453131}
+  m_Layer: 0
+  m_Name: CameraController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &323453130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323453129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.39740294, y: 0.93444717, z: -0.8116739}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323453131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323453129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f500860b8434ed941b0f18a74bec690e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,7 +2103,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3124,7 +3169,7 @@ RectTransform:
   m_Father: {fileID: 505950539}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4411,7 +4456,7 @@ RectTransform:
   m_Father: {fileID: 1315890850}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5360,7 +5405,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleManager: {fileID: 308424484}
+  cam: {fileID: 330585545}
   cameraSpeed: 12
+  zoomSpeed: 40
+  minZoom: 10
+  maxZoom: 120
+  cameraController: {fileID: 323453131}
 --- !u!1 &1163687479 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1583358907847966039, guid: f451abb5c347ca54883f7a23da6fda71, type: 3}
@@ -6365,7 +6415,7 @@ RectTransform:
   m_Father: {fileID: 190613373}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6882,6 +6932,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleUI: {fileID: 20716572}
+  hpSlider: {fileID: 2134987731}
+  mpSlider: {fileID: 877863836}
+  apSlider: {fileID: 496986206}
 --- !u!1001 &1606132449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9586,3 +9639,4 @@ SceneRoots:
   - {fileID: 2097001567}
   - {fileID: 1190763384}
   - {fileID: 1510724511}
+  - {fileID: 323453130}

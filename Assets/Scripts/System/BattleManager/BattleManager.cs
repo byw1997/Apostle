@@ -23,6 +23,7 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance { get; private set; }
 
     public TilemapManager tilemapManager;
+    public UIManager uiManager;
 
     private void Awake()
     {
@@ -65,6 +66,10 @@ public class BattleManager : MonoBehaviour
     {
         currentCharacterIndex = 0;
         currentMode = BattleInputMode.Deploy;
+        foreach(GameObject character in playerCharactersOnBattle)
+        {
+            character.GetComponent<Character>().InitializeBattle();
+        }
         battleInputHandler.StartDeployment(playerCharactersOnBattle);
     }
     
@@ -100,8 +105,13 @@ public class BattleManager : MonoBehaviour
 
     public void EndTurn()
     {
+        if (currentCharacter)
+        {
+            currentCharacter.DisconnectUI();
+        }
         currentCharacter = charactersOnBattle[currentCharacterIndex];
         currentCharacter.InitializeTurn();
+        uiManager.UpdateUI(currentCharacter);
         currentCharacterIndex++;
         currentCharacterIndex %= charactersOnBattle.Count;
         if (currentCharacter.GetComponent<Player>() != null || currentCharacter.GetComponent<Companion>() != null)

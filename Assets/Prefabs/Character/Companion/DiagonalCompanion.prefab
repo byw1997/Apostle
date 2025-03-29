@@ -82,9 +82,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: 
-  hp: 20
+  hp: 30
   currentHp: 0
-  mp: 10
+  mp: 20
   currentMp: 0
   str: 10
   dex: 10
@@ -111,3 +111,10 @@ MonoBehaviour:
   - {fileID: 0}
   skillLevel: 000000000000000000000000000000000000000000000000
   acquiredSkills: 
+  helmet: {fileID: 0}
+  armor: {fileID: 0}
+  glove: {fileID: 0}
+  boots: {fileID: 0}
+  MainHandweapon: {fileID: 0}
+  SubHandWeapon: {fileID: 0}
+  status: 0

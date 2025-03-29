@@ -13,7 +13,7 @@ public class BattleGameState : GameState
 
     public override void ExitState()
     {
-
+        uiManager.UnShowBattleUI();
     }
 
     public override void UpdateState()

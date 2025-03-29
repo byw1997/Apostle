@@ -8,7 +8,12 @@ public class InputManager : MonoBehaviour
     [SerializeField] private BattleManager battleManager;
 
     [Header("Camera Settings")]
+    public Camera cam;
     [SerializeField] private float cameraSpeed = 12f;
+    public float zoomSpeed = 40f; // ¡‹ º”µµ
+    public float minZoom = 10f; // √÷º“ ¡‹ ∞™
+    public float maxZoom = 120f; // √÷¥Î ¡‹ ∞™
+    public CameraController cameraController;
 
     public void HandleInput(GState state)
     {
@@ -36,6 +41,12 @@ public class InputManager : MonoBehaviour
 
     void HandleScreenInput()
     {
+        HandleCameraZoom();
+        HandleCameraMove();
+    }
+
+    private void HandleCameraMove()
+    {
         Vector3 direction = Vector3.zero;
 
         if (Input.GetKey(KeyCode.W))
@@ -56,6 +67,23 @@ public class InputManager : MonoBehaviour
         }
 
         Camera.main.transform.position += direction * cameraSpeed * Time.deltaTime;
+    }
+
+    private void HandleCameraZoom()
+    {
+        float scrollData;
+        scrollData = Input.GetAxis("Mouse ScrollWheel");
+
+        if (cam.orthographic)
+        {
+            cam.orthographicSize -= scrollData * zoomSpeed;
+            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, maxZoom);
+        }
+        else
+        {
+            cam.fieldOfView -= scrollData * zoomSpeed;
+            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minZoom, maxZoom);
+        }
     }
 
     void HandleDefaultInput()
