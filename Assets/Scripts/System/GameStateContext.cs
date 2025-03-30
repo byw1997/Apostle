@@ -6,8 +6,7 @@ public enum GState
     Default,
     Field,
     Battle,
-    Dialogue,
-    Menu
+    Dialogue
 }
 
 public class GameStateContext

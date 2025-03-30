@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FieldGameState fieldState;
     [SerializeField] private BattleGameState battleState;
     [SerializeField] private DialogueGameState dialogueState;
-    [SerializeField] private MenuGameState menuState;
 
     private GameStateContext gameStateContext;
 
@@ -60,9 +59,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GState.Dialogue:
                 gameStateContext.Transition(dialogueState);
-                break;
-            case GState.Menu:
-                gameStateContext.Transition(menuState);
                 break;
         }
         

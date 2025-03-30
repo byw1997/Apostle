@@ -2,10 +2,21 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
+public enum MenuState
+{
+    Options,
+    Inventory,
+    Skills,
+    Quests,
+    Map,
+    None
+}
+
 public class InputManager : MonoBehaviour
 {
     [Header("Input Medium")]
     [SerializeField] private BattleManager battleManager;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Camera Settings")]
     public Camera cam;
@@ -15,6 +26,8 @@ public class InputManager : MonoBehaviour
     public float maxZoom = 120f; // ÃÖ´ë ÁÜ °ª
     public CameraController cameraController;
 
+    private MenuState currentMenuState = MenuState.None;
+
     public void HandleInput(GState state)
     {
         switch (state)
@@ -23,18 +36,17 @@ public class InputManager : MonoBehaviour
                 HandleDefaultInput();
                 break;
             case GState.Field:
+                HandleMenuInput();
                 HandleScreenInput();
                 HandleFieldInput();
                 break;
             case GState.Battle:
+                HandleMenuInput();
                 HandleScreenInput();
                 HandleBattleInput();
                 break;
             case GState.Dialogue:
                 HandleDialogueInput();
-                break;
-            case GState.Menu:
-                HandleMenuInput();
                 break;
         }
     }
@@ -108,6 +120,55 @@ public class InputManager : MonoBehaviour
 
     void HandleMenuInput()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            switch (currentMenuState)
+            {
+                case MenuState.Options:
+                    UnShowOption();
+                    break;
+                case MenuState.Inventory:
+                    UnShowInventory();
+                    break;
+                case MenuState.Skills:
+                    UnShowSkills();
+                    break;
+                case MenuState.Quests:
+                    break;
+                case MenuState.Map:
+                    break;
+                case MenuState.None:
+                    ShowOption();
+                    break;
+            } 
+        }
+    }
 
+    void ShowOption()
+    {
+        currentMenuState = MenuState.Options;
+        Time.timeScale = 0f;
+        uiManager.ShowOptionUI();
+    }
+
+    void UnShowOption()
+    {
+        currentMenuState = MenuState.None;
+        Time.timeScale = 1f;
+        uiManager.UnShowOptionUI();
+    }
+
+    void UnShowInventory()
+    {
+        currentMenuState = MenuState.None;
+        Time.timeScale = 1f;
+        uiManager.UnShowInventoryUI();
+    }
+
+    void UnShowSkills()
+    {
+        currentMenuState = MenuState.None;
+        Time.timeScale = 1f;
+        uiManager.UnShowSkillsUI();
     }
 }

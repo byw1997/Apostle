@@ -4,11 +4,14 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject battleUI;
+    [SerializeField] GameObject OptionUI;
 
-    [Header("UI")]
+    [Header("BattleUI")]
     public Slider hpSlider;
     public Slider mpSlider;
     public Slider apSlider;
+
+    
 
     public void UpdateUI(Character character)
     {
@@ -28,5 +31,25 @@ public class UIManager : MonoBehaviour
     public void UnShowBattleUI()
     {
         battleUI.SetActive(false);
+    }
+
+    public void ShowOptionUI()
+    {
+        OptionUI.SetActive(true);
+    }
+
+    public void UnShowOptionUI()
+    {
+        OptionUI.SetActive(false);
+    }
+
+    public void UnShowInventoryUI()
+    {
+
+    }
+
+    public void UnShowSkillsUI()
+    {
+
     }
 }

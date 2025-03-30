@@ -149,7 +149,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         SelectSkillByShortcut();
     }
 
-    public void HandleInputMove()//입력 시 gridpos로 dict에서 검색해서 이동가능한지 파악. Idle로 전환 후 순차이동. 
+    public void HandleInputMove()//최적 경로 보강 필요(교전 거리 등)
     {
         if(battleManager.currentCharacter.status != CharacterStatus.Idle)
         {
