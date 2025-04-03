@@ -3400,7 +3400,6 @@ GameObject:
   - component: {fileID: 722003981}
   - component: {fileID: 722003980}
   - component: {fileID: 722003979}
-  - component: {fileID: 722003978}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3439,19 +3438,6 @@ MonoBehaviour:
   fieldState: {fileID: 722003981}
   battleState: {fileID: 722003980}
   dialogueState: {fileID: 722003979}
---- !u!114 &722003978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 722003975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5641c90c70819d24eb09accc4fd5c970, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputManager: {fileID: 1141166610}
 --- !u!114 &722003979
 MonoBehaviour:
   m_ObjectHideFlags: 0

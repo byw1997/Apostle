@@ -56,7 +56,8 @@ public enum SkillAreaType
     Orthogonal,
     Diagonal,
     Circle,
-    Custom
+    Custom,
+    None
 }
 
 public enum DamageType
@@ -86,6 +87,7 @@ public class Skill : ScriptableObject
     [Header("Skill Info")]
     public int skillID;
     public string skillName;
+    public int[] skillHPCost;
     public int[] skillMPCost;
     public int[] skillAPCost;
     public SkillType skillType;
@@ -96,6 +98,7 @@ public class Skill : ScriptableObject
     public SkillEffectType skillEffectType;
     public SkillTargetType skillTargetType;
     public SkillAreaType skillAreaType;
+    public int[] skillAreaRanges;
     public DamageType damageType;
     public float[] skillEffectBaseValue;
     public float[] skillEffectScaleValue;

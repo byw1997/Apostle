@@ -17,7 +17,7 @@ public class BattleManager : MonoBehaviour
     public List<Character> charactersOnBattle = new List<Character>();
 
     private int currentCharacterIndex = 0;
-    private Skill selectedSkill = null;
+    public int selectedSkill = -1;
     public Character currentCharacter = null;
 
     public static BattleManager Instance { get; private set; }
@@ -54,9 +54,11 @@ public class BattleManager : MonoBehaviour
             case BattleInputMode.Idle:
                 break;
             case BattleInputMode.Move:
+                selectedSkill = -1;
                 battleInputHandler.CalculateMovable();
                 break;
             case BattleInputMode.Skill:
+                battleInputHandler.CalculateSkillRange(currentCharacter, selectedSkill);
                 break;
         }
         currentMode = nextMode;
@@ -109,6 +111,7 @@ public class BattleManager : MonoBehaviour
         {
             currentCharacter.DisconnectUI();
         }
+        battleInputHandler.EndTurn();
         currentCharacter = charactersOnBattle[currentCharacterIndex];
         currentCharacter.InitializeTurn();
         uiManager.UpdateUI(currentCharacter);
@@ -122,25 +125,15 @@ public class BattleManager : MonoBehaviour
 
     public void SelectSkill(int i)
     {
-        if (selectedSkill == currentCharacter.skillSet[i])
+        if (selectedSkill == i)
         {
-            selectedSkill = null;
             Transition(BattleInputMode.Move);
         }
         else
         {
-            selectedSkill = currentCharacter.skillSet[i];
-            if (selectedSkill)
+            selectedSkill = i;
+            if (selectedSkill != -1)
             {
-                foreach(CustomRange range in selectedSkill.customRanges)
-                {
-                    Debug.Log(range.tilePositions.Count);
-                    foreach (Vector2Int pos in range.tilePositions)
-                    {
-                        Debug.Log(pos.x);
-                    }
-                }
-                Debug.Log(selectedSkill.customRanges.Length);
                 Transition(BattleInputMode.Skill);
             }
         }
@@ -148,7 +141,7 @@ public class BattleManager : MonoBehaviour
 
     public void UnSelectSkill()
     {
-        selectedSkill = null;
+        selectedSkill = -1;
         Transition(BattleInputMode.Move);
     }
 

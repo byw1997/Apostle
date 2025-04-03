@@ -10,47 +10,54 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f2ae6fcc67dfc54c831f5cdac1bcbc5, type: 3}
-  m_Name: TestDarkCircle
+  m_Name: TestFire
   m_EditorClassIdentifier: 
-  skillID: 62632
+  skillID: 0
   skillName: 
-  skillHPCost: 
   skillMPCost: 
   skillAPCost: 
   skillType: 0
-  skillTarget: 2
+  skillTarget: 0
   skillRangeType: 0
   skillRanges: 
   customRanges:
   - tilePositions:
     - {x: 0, y: 0}
     - {x: 0, y: -1}
-    - {x: -1, y: -1}
     - {x: 0, y: -2}
-    - {x: 1, y: -1}
-  - tilePositions:
-    - {x: 0, y: 0}
-    - {x: 1, y: -1}
-    - {x: 1, y: 0}
-    - {x: 1, y: 1}
-    - {x: 2, y: 0}
-  - tilePositions:
-    - {x: 0, y: 0}
-    - {x: -1, y: 1}
+    - {x: 0, y: -3}
+    - {x: 0, y: -4}
+    - {x: -1, y: -3}
     - {x: 0, y: 1}
-    - {x: 1, y: 1}
     - {x: 0, y: 2}
   - tilePositions:
+    - {x: -2, y: -2}
+    - {x: -1, y: -3}
+    - {x: 0, y: -3}
+    - {x: 1, y: -3}
+    - {x: 1, y: -2}
+    - {x: 1, y: -1}
     - {x: 0, y: 0}
-    - {x: -1, y: 0}
-    - {x: -1, y: -1}
     - {x: -1, y: 1}
-    - {x: -2, y: 0}
+    - {x: -2, y: 2}
+    - {x: -1, y: 2}
+    - {x: 0, y: 2}
+    - {x: 2, y: 2}
+    - {x: 1, y: 2}
+  - tilePositions:
+    - {x: -1, y: -2}
+    - {x: 0, y: -3}
+    - {x: 1, y: -2}
+    - {x: 1, y: -1}
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 0, y: 3}
+    - {x: -1, y: 2}
   skillEffectType: 0
   skillTargetType: 0
-  skillAreaType: 1
-  skillAreaRanges: 
-  damageType: 9
+  skillAreaType: 3
+  damageType: 0
   skillEffectBaseValue: []
   skillEffectScaleValue: []
   skillEffectDuration: []

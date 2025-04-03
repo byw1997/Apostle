@@ -42,6 +42,15 @@ public class TilemapManager : MonoBehaviour
                     }
                 }
                 break;
+            case BattleInputMode.Skill:
+                foreach (Tile tile in tileMap.Values)
+                {
+                    if (reachableTiles.ContainsKey(tile.gridPos))
+                    {
+                        tile.Highlight(bMode);
+                    }
+                }
+                break;
         }
     }
 

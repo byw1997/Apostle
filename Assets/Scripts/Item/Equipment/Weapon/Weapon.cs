@@ -46,15 +46,17 @@ public enum RangeType
     Diagonal
 }
 
-
-public abstract class Weapon : Equipment
+[CreateAssetMenu(fileName = "Weapon", menuName = "Scriptable Objects/Equipment/Weapon")]
+public class Weapon : Equipment
 {
-    WeaponType weaponType;
-    RangeType rangeType;
-    int minimumDamage;
-    int maximumDamage;
-    StatBonusType statBonusType;
-    bool technical;
-    DamageType damageType;
-    int accuracy;
+    public WeaponType weaponType;
+    public int range;
+    public RangeType rangeType;
+    public int minimumDamage;
+    public int maximumDamage;
+    public float damageReduction;
+    public StatBonusType statBonusType;
+    public bool technical;
+    public DamageType damageType;
+    public int accuracy;
 }

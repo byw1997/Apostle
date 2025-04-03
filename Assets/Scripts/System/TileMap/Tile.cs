@@ -83,6 +83,7 @@ public class Tile : MonoBehaviour
             case BattleInputMode.Idle:
                 break;
             case BattleInputMode.Skill:
+                HighlightMovable();
                 break;
             case BattleInputMode.Move:
                 if (movable && objectOnTile == null)

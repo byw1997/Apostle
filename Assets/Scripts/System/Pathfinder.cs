@@ -91,4 +91,108 @@ public class Pathfinder
         return reachableTiles;
     }
 
+    public Dictionary<Vector2Int, Node> CalculateSkillRange(Character character, int index)
+    {
+        Vector2Int startPos = character.gridPos;
+        Skill skill = character.skillSet[index];
+        int level = character.skillLevel[index];
+        SkillRangeType rangeType = skill.skillRangeType;
+        Debug.Log("Level : " + level);
+        int range = skill.skillRanges[level];
+        Dictionary<Vector2Int, Node> reachableTiles = new Dictionary<Vector2Int, Node>();
+        Queue<Node> queue = new Queue<Node>();
+
+        queue.Enqueue(new Node(startPos, 0, new List<Vector2Int> { startPos }));
+        reachableTiles[startPos] = new Node(startPos, 0, new List<Vector2Int> { startPos });
+
+        Vector2Int[] directions = null;
+
+        switch (rangeType)
+        {
+            case SkillRangeType.Orthogonal:
+                directions = orthogonalDirections;
+                break;
+            case SkillRangeType.Diagonal:
+                directions = diagonalDirections;
+                break;
+            case SkillRangeType.Circle:
+                return CalculateCircleRange(startPos, range);
+            case SkillRangeType.Weapon:
+                switch(character.MainHandweapon.rangeType)
+                {
+                    case RangeType.Orthogonal:
+                        directions = orthogonalDirections;
+                        break;
+                    case RangeType.Diagonal:
+                        directions = diagonalDirections;
+                        break;
+                }
+                break;
+        }
+
+        Assert.IsNotNull(directions);
+
+        while (queue.Count > 0)
+        {
+            Node current = queue.Dequeue();
+
+            foreach (Vector2Int dir in directions)
+            {
+                Vector2Int nextPos = current.position + dir;
+                if (!tileMap.ContainsKey(nextPos))
+                {
+                    continue;
+                }
+                int newCost = current.cost + tileMap[nextPos].moveCost;
+
+                if (newCost > range)
+                    continue;
+
+                Tile nextTile = tileMap[nextPos];
+
+                if (!nextTile.movable || nextTile.objectOnTile)
+                    continue;
+
+                if (!reachableTiles.ContainsKey(nextPos) || newCost < reachableTiles[nextPos].cost)
+                {
+                    List<Vector2Int> newPath = new List<Vector2Int>(current.path) { nextPos };
+                    Node newNode = new Node(nextPos, newCost, newPath);
+
+                    reachableTiles[nextPos] = newNode;
+                    queue.Enqueue(newNode);
+                }
+            }
+        }
+
+        return reachableTiles;
+    }
+
+    public Dictionary<Vector2Int, Node> CalculateCircleRange(Vector2Int startPos, int range)
+    {
+        Dictionary<Vector2Int, Node> reachableTiles = new Dictionary<Vector2Int, Node>();
+        
+        int minX = startPos.x - range;
+        int maxX = startPos.x + range;
+        int minY = startPos.y - range;
+        int maxY = startPos.y + range;
+
+        for(int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                Vector2Int pos = new Vector2Int(x, y);
+                if (tileMap.ContainsKey(pos))
+                {
+                    int distance = Mathf.FloorToInt(Vector2Int.Distance(startPos, pos));
+                    if (distance <= range)
+                    {
+                        reachableTiles[pos] = new Node(pos, distance, new List<Vector2Int> { pos });
+                    }
+                }
+            }
+        }
+
+        return reachableTiles;
+    }
+
 }

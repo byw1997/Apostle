@@ -205,4 +205,27 @@ public class Character : MonoBehaviour
             apSlider = null;
         }
     }
+
+    public void UseSkill(Character character, int index)
+    {
+        if (currentActionPoint >= skillSet[index].skillAPCost[skillLevel[index]])
+        {
+            currentActionPoint -= skillSet[index].skillAPCost[skillLevel[index]];
+            UpdateApSlider();
+            StartCoroutine(UseSkillOnTarget(character, index));
+        }
+        else
+        {
+            Debug.Log("Not enough AP");
+            return;
+        }
+    }
+
+    IEnumerator UseSkillOnTarget(Character character, int index)
+    {
+        status = CharacterStatus.Casting;
+        // Implement the logic to use the skill on the target
+        yield return null;
+        status = CharacterStatus.Idle;
+    }
 }

@@ -37,6 +37,10 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     };
 
     private Dictionary<Vector2Int, Pathfinder.Node> cachedReachableTiles = null;
+    private Dictionary<Vector2Int, Pathfinder.Node>[] cachedSkillRanges = new Dictionary<Vector2Int, Pathfinder.Node>[6]
+{
+    null, null, null, null, null, null
+};
 
     void Awake()
     {
@@ -146,7 +150,56 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             return;
         }
+
+        CalculateSkillRange(battleManager.currentCharacter, battleManager.selectedSkill);
         SelectSkillByShortcut();
+
+        
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        foreach(var range in cachedSkillRanges[battleManager.selectedSkill])
+        {
+            Debug.Log(range.Key);
+        }
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        LayerMask tileLayer = LayerMask.GetMask("Tile");
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayer))
+        {
+            Tile tile = hit.collider.gameObject.GetComponent<Tile>();
+
+            if (tile && tile.deployable && tile.objectOnTile == null)
+            {
+                if (lastMouseOveredTile != tile)
+                {
+                    lastMouseOveredTile = tile;
+                }
+                if (Input.GetMouseButtonDown(0))
+                {
+
+                }
+            }
+        }
+
+    }
+
+    public void CalculateSkillRange(Character character, int index)
+    {
+        if(cachedSkillRanges[index] != null)
+        {
+            tilemapManager.HighlightAll(BattleInputMode.Skill, cachedSkillRanges[index]);
+            return;
+        }
+        Dictionary<Vector2Int, Pathfinder.Node> skillRange = null;
+        
+        skillRange = pathfinder.CalculateSkillRange(character, index);
+        Assert.IsNotNull(skillRange);
+        cachedSkillRanges[index] = skillRange;
+        tilemapManager.HighlightAll(BattleInputMode.Skill, skillRange);
     }
 
     public void HandleInputMove()//최적 경로 보강 필요(교전 거리 등)
@@ -155,18 +208,18 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             return;
         }
+
+        CalculateMovable();
+        SelectSkillByShortcut();
+
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
-        if (cachedReachableTiles == null)
-        {
-            CalculateMovable();
-        }
-
+        
         Assert.IsNotNull(cachedReachableTiles);
 
-        SelectSkillByShortcut();
+
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -186,6 +239,11 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     public void CalculateMovable()
     {
+        if (cachedReachableTiles != null)
+        {
+            tilemapManager.HighlightAll(BattleInputMode.Move, cachedReachableTiles);
+            return;
+        }
         Dictionary<Vector2Int, Pathfinder.Node> reachableTiles = null;
         reachableTiles = pathfinder.CalculateMoveRange(battleManager.currentCharacter, battleManager.currentCharacter.moveType);
         Assert.IsNotNull(reachableTiles);
@@ -197,7 +255,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     {
         battleManager.currentCharacter.Move(tile, node);
         tilemapManager.UnhighlightAll();
-        cachedReachableTiles = null;
+        EmptyCache();
     }
 
     private void SelectSkillByShortcut()
@@ -208,6 +266,20 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
             {
                 battleManager.SelectSkill(i - 1);
             }
+        }
+    }
+
+    public void EndTurn()
+    {
+        EmptyCache();
+    }
+
+    public void EmptyCache()
+    {
+        cachedReachableTiles = null;
+        for (int i = 0; i < cachedSkillRanges.Length; i++)
+        {
+            cachedSkillRanges[i] = null;
         }
     }
 }
