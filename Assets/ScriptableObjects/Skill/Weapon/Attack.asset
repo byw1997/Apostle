@@ -19,7 +19,7 @@ MonoBehaviour:
   skillAPCost: 03000000
   skillType: 0
   skillTarget: 2
-  skillRangeType: 2
+  skillRangeType: 3
   skillRanges: 01000000
   customRanges: []
   skillEffectType: 0

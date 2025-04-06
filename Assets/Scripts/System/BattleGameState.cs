@@ -8,6 +8,7 @@ public class BattleGameState : GameState
 
     public override void EnterState()
     {
+        //LoadData();
         EnterBattle();
     }
 
@@ -21,11 +22,19 @@ public class BattleGameState : GameState
         inputManager.HandleInput(GState.Battle);
     }
 
+    private void LoadData()
+    {
+        if (!battleManager.IsLoaded)
+        {
+            battleManager.LoadAllEnemiesFromAddressables();
+        }
+    }
+
     public void EnterBattle()
     {
         battleManager.playerCharactersOnBattle.Add(characterManager.playerCharacter);
         battleManager.playerCharactersOnBattle.AddRange(characterManager.activeCompanionCharacters);
         uiManager.ShowBattleUI();
-        battleManager.InitializeBattle();
+        StartCoroutine(battleManager.InitializeBattle());
     }
 }

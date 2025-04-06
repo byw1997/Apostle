@@ -122,9 +122,11 @@ public class Pathfinder
                 {
                     case RangeType.Orthogonal:
                         directions = orthogonalDirections;
+                        Debug.Log("Orthogonal");
                         break;
                     case RangeType.Diagonal:
                         directions = diagonalDirections;
+                        Debug.Log("Diagonal");
                         break;
                 }
                 break;
@@ -143,15 +145,12 @@ public class Pathfinder
                 {
                     continue;
                 }
-                int newCost = current.cost + tileMap[nextPos].moveCost;
+                int newCost = current.cost + 1;
 
                 if (newCost > range)
                     continue;
 
                 Tile nextTile = tileMap[nextPos];
-
-                if (!nextTile.movable || nextTile.objectOnTile)
-                    continue;
 
                 if (!reachableTiles.ContainsKey(nextPos) || newCost < reachableTiles[nextPos].cost)
                 {

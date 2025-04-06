@@ -11,14 +11,6 @@ public enum SkillType
     Passive
 }
 
-public enum SkillTargetTile
-{
-    Self,
-    Ally,
-    Enemy,
-    All
-}
-
 public enum SkillTarget
 {
     Self,

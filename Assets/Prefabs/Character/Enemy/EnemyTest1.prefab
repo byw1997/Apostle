@@ -3855,10 +3855,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c708f4cb05f3e7e42987cc47e6ddf727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: 
-  hp: 20
+  characterName: TestEnemy
+  hp: 30
   currentHp: 0
-  mp: 10
+  mp: 30
   currentMp: 0
   str: 10
   dex: 8
@@ -3869,7 +3869,7 @@ MonoBehaviour:
   actionPoint: 6
   tileUnderCharacter: {fileID: 0}
   gridPos: {x: 0, y: 0}
-  type: 0
+  type: 2
   currentActionPoint: 0
   EngageRange: 0
   moveType: 0
@@ -3889,8 +3889,10 @@ MonoBehaviour:
   armor: {fileID: 0}
   glove: {fileID: 0}
   boots: {fileID: 0}
-  MainHandweapon: {fileID: 0}
+  MainHandweapon: {fileID: 11400000, guid: c9d55ef2b2ec64b4a983f42219450ee6, type: 2}
   SubHandWeapon: {fileID: 0}
+  status: 0
+  enemyId: 0
 --- !u!1 &8677345343283305016
 GameObject:
   m_ObjectHideFlags: 0

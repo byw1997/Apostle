@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using TMPro;
 
 public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 {
@@ -41,6 +42,8 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 {
     null, null, null, null, null, null
 };
+
+    public TextMeshProUGUI skillUI;
 
     void Awake()
     {
@@ -159,10 +162,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             return;
         }
-        foreach(var range in cachedSkillRanges[battleManager.selectedSkill])
-        {
-            Debug.Log(range.Key);
-        }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -172,12 +171,26 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 
-            if (tile && tile.deployable && tile.objectOnTile == null)
+            if (tile)
             {
                 if (lastMouseOveredTile != tile)
                 {
                     lastMouseOveredTile = tile;
                 }
+                if(battleManager.selectedSkill == -1)
+                {
+                    return;
+                }
+                if (IsSkillAvailableForPlayer(tile, battleManager.currentCharacter.skillSet[battleManager.selectedSkill]))
+                {
+                    skillUI.transform.position = Input.mousePosition;
+                    ShowSkillPreview();
+                }
+                else
+                {
+                    UnShowSkillPreview();
+                }
+
                 if (Input.GetMouseButtonDown(0))
                 {
 
@@ -187,8 +200,59 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     }
 
+    public void ShowSkillPreview()//정보 표시 수정 필요
+    {
+        Skill skill = battleManager.currentCharacter.skillSet[battleManager.selectedSkill];
+        skillUI.text = skill.skillName;
+        skillUI.gameObject.SetActive(true);
+    }
+
+    public void UnShowSkillPreview()
+    {
+        skillUI.gameObject.SetActive(false);
+    }
+
+    public bool IsSkillAvailableForPlayer(Tile tile, Skill skill)
+    {
+        if(cachedSkillRanges[battleManager.selectedSkill] == null || !cachedSkillRanges[battleManager.selectedSkill].ContainsKey(tile.gridPos))
+        {
+            return false;
+        }
+        if (tile && tile.objectOnTile)
+        {
+            Character characterOnTile = tile.objectOnTile.GetComponent<Character>();
+            Debug.Log(skill.skillTarget);
+            Debug.Log(characterOnTile);
+
+            if (characterOnTile != null)
+            {
+                if(skill.skillTarget == SkillTarget.Self && characterOnTile == battleManager.currentCharacter)
+                {
+                    return true;
+                }
+                else if(skill.skillTarget == SkillTarget.Ally && (characterOnTile is Player || characterOnTile is Companion))
+                {
+                    return true;
+                }
+                else if (skill.skillTarget == SkillTarget.Enemy && characterOnTile is Enemy)
+                {
+                    return true;
+                }
+                else if (skill.skillTarget == SkillTarget.All)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void CalculateSkillRange(Character character, int index)
     {
+        if(index == -1)
+        {
+            return;
+        }
         if(cachedSkillRanges[index] != null)
         {
             tilemapManager.HighlightAll(BattleInputMode.Skill, cachedSkillRanges[index]);

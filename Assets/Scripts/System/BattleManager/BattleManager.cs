@@ -1,7 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 public enum BattleInputMode
 {
+    Loading,
     Deploy,
     Idle,
     Move,
@@ -25,6 +29,10 @@ public class BattleManager : MonoBehaviour
     public TilemapManager tilemapManager;
     public UIManager uiManager;
 
+    private Dictionary<int, GameObject> enemyDict = new Dictionary<int, GameObject>();
+    public bool IsLoaded { get; private set; } = false;
+    public EnemyGroupData enemyGroupData;
+
     private void Awake()
     {
         if (Instance == null)
@@ -37,6 +45,42 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
         battleInputHandler = GetComponent<BattleInputHandler>();
+        LoadAllEnemiesFromAddressables();
+    }
+
+    public void LoadAllEnemiesFromAddressables()
+    {
+        Addressables.LoadAssetsAsync<GameObject>("Enemy", null).Completed += OnEnemiesLoaded;
+    }
+
+    private void OnEnemiesLoaded(AsyncOperationHandle<IList<GameObject>> handle)
+    {
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            foreach (var prefab in handle.Result)
+            {
+                Enemy enemy = prefab.GetComponent<Enemy>();
+                if (enemy != null && !enemyDict.ContainsKey(enemy.enemyID))
+                {
+                    enemyDict.Add(enemy.enemyID, prefab);
+                    Debug.Log($"Loaded Enemy ID {enemy.enemyID} from Addressables.");
+                }
+                else
+                {
+                    Debug.LogWarning($"Duplicate or invalid Enemy prefab: {prefab.name}");
+                }
+            }
+
+            IsLoaded = true;
+        }
+        else
+        {
+            Debug.LogError("Failed to load Enemy prefabs from Addressables.");
+        }
+    }
+    public GameObject GetEnemyPrefabByID(int id)
+    {
+        return enemyDict.TryGetValue(id, out var prefab) ? prefab : null;
     }
 
     public void HandleInput()
@@ -64,20 +108,44 @@ public class BattleManager : MonoBehaviour
         currentMode = nextMode;
     }
 
-    public void InitializeBattle()
+    public IEnumerator InitializeBattle()
     {
+        currentMode = BattleInputMode.Loading;
+        while (IsLoaded == false)
+        {
+            yield return null;
+        }
+        Debug.Log("Loading Ended");
         currentCharacterIndex = 0;
         currentMode = BattleInputMode.Deploy;
         foreach(GameObject character in playerCharactersOnBattle)
         {
             character.GetComponent<Character>().InitializeBattle();
         }
+        
+        DeployEnemy();
         battleInputHandler.StartDeployment(playerCharactersOnBattle);
     }
     
-    private void DeployEnemy()
+    public void DeployEnemy()
     {
+        
         //Enemies will be added to the charactersOnBattle list
+        for (int i = 0; i < enemyGroupData.enemyIdList.Count; i++)
+        {
+            GameObject enemyPrefab = GetEnemyPrefabByID(enemyGroupData.enemyIdList[i]);
+            if (enemyPrefab != null)
+            {
+                Tile tile = tilemapManager.tileMap[enemyGroupData.enemyPosList[i]];
+                GameObject enemyInstance = Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity);
+                tile.Deploy(enemyInstance);
+                charactersOnBattle.Add(enemyInstance.GetComponent<Character>());
+            }
+            else
+            {
+                Debug.LogError($"Enemy prefab with ID {enemyGroupData.enemyIdList[i]} not found.");
+            }
+        }
     }
 
     public void EndDeploy()
@@ -86,7 +154,7 @@ public class BattleManager : MonoBehaviour
         {
             charactersOnBattle.Add(character.GetComponent<Character>());
         }
-        DeployEnemy();
+
         charactersOnBattle.Sort((a, b) => b.dex.CompareTo(a.dex));
         Transition(BattleInputMode.Idle);
     }
