@@ -16,6 +16,14 @@ public enum MoveType
     Diagonal
 }
 
+public enum Resistance
+{
+    Weak,
+    Normal,
+    Strong,
+    Immune
+}
+
 public enum EngagementType
 {
     Orthogonal,
@@ -31,6 +39,8 @@ public enum ClassType
     None
 }
 
+
+
 public enum CharacterStatus
 {
     Idle,
@@ -39,7 +49,7 @@ public enum CharacterStatus
     Casting,
     Dead
 }
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IDamageable
 {
     [Header("Character Info")]
     public string characterName;
@@ -55,6 +65,15 @@ public class Character : MonoBehaviour
     public int wis;
     public int luk;
     public int actionPoint;
+    public Resistance piercingResistance;
+    public Resistance bluntResistance;
+    public Resistance slashingResistance;
+    public Resistance fireResistance;
+    public Resistance lightningResistance;
+    public Resistance iceResistance;
+    public Resistance shockResistance;
+    public Resistance holyResistance;
+    public Resistance darkResistance;
 
     public Tile tileUnderCharacter;
     public Vector2Int gridPos;
@@ -81,8 +100,8 @@ public class Character : MonoBehaviour
     public Armor armor;
     public Glove glove;
     public Boots boots;
-    public Weapon MainHandweapon;
-    public Weapon SubHandWeapon;
+    public Weapon mainHandWeapon;
+    public Weapon subHandWeapon;
 
     public CharacterStatus status;
 
@@ -206,18 +225,52 @@ public class Character : MonoBehaviour
         }
     }
 
-    public void UseSkill(Character character, int index)
+    public void UseSkill(Tile tile, int index)
     {
-        if (currentActionPoint >= skillSet[index].skillAPCost[skillLevel[index]])
+        Debug.Log("Using skill: " + skillSet[index].skillName);
+        Skill skill = skillSet[index];
+        switch (skill.skillTargetType)
         {
-            currentActionPoint -= skillSet[index].skillAPCost[skillLevel[index]];
-            UpdateApSlider();
-            StartCoroutine(UseSkillOnTarget(character, index));
+            case SkillTargetType.Single:
+                if (tile.objectOnTile != null)
+                {
+                    Character character = tile.objectOnTile.GetComponent<Character>();
+                    if (character != null)
+                    {
+                        if (IsSkillCostSufficient(index))
+                        {
+                            Debug.Log("Skill cost is sufficient");
+                            TakeDamage(DamageType.None, skillSet[index].skillHPCost[skillLevel[index]]);
+                            TakeMPDamage(skillSet[index].skillMPCost[skillLevel[index]]);
+                            TakeAPDamage(skillSet[index].skillAPCost[skillLevel[index]]);
+                            StartCoroutine(UseSkillOnTarget(character, index));
+                        }
+                    }
+                }
+                break;
+            case SkillTargetType.Multiple:
+                // Implement area skill logic here
+                break;
+        }
+
+    }
+
+    bool IsSkillCostSufficient(int index)
+    {
+        Skill skill = skillSet[index];
+        if (skill == null)
+        {
+            Debug.LogError("Skill not found");
+            return false;
+        }
+        int level = skillLevel[index];
+        if (currentActionPoint >= skill.skillAPCost[level] && currentHp >= skill.skillHPCost[level] && currentMp >= skill.skillMPCost[level])
+        {
+            return true;
         }
         else
         {
-            Debug.Log("Not enough AP");
-            return;
+            return false;
         }
     }
 
@@ -225,7 +278,242 @@ public class Character : MonoBehaviour
     {
         status = CharacterStatus.Casting;
         // Implement the logic to use the skill on the target
-        yield return null;
+        if(IsSkillAvailable(character, index) == false)
+        {
+            Debug.Log("Skill not available");
+            yield break;
+        }
+        yield return StartCoroutine(ActivateSkill(character, index));
         status = CharacterStatus.Idle;
+    }
+
+    IEnumerator ActivateSkill(Character character, int index)
+    {
+        Skill skill = skillSet[index];
+        switch (skill.skillEffectType)
+        {
+            case SkillEffectType.Damage:
+                // Implement damage logic here
+                character.TakeDamage(skill.damageType, CalculateSkillEffectAmount(mainHandWeapon, skill, skillLevel[index]));
+                break;
+            case SkillEffectType.Heal:
+                // Implement heal logic here
+                character.TakeHeal(CalculateSkillEffectAmount(mainHandWeapon, skill, skillLevel[index]));
+                break;
+            case SkillEffectType.Buff:
+                break;
+            case SkillEffectType.Debuff:
+                break;
+        }
+        yield return null;
+    }
+
+    public int CalculateWeaponDamage(Weapon weapon)
+    {
+        if((mainClass == ClassType.Wizard || subClass == ClassType.Wizard) && (weapon.weaponType == WeaponType.Staff || weapon.weaponType == WeaponType.Wand))
+        {
+            return Random.Range(weapon.minimumDamage, weapon.maximumDamage) + kno;
+        }
+        else
+        {
+            if (weapon.technical)
+            {
+                return Random.Range(weapon.minimumDamage, weapon.maximumDamage) + Mathf.Max(str, dex);
+            }
+            else
+            {
+                return Random.Range(weapon.minimumDamage, weapon.maximumDamage) + str;
+            }
+        }
+    }
+
+    public int CalculateSkillEffectAmount(Weapon weapon, Skill skill, int level)
+    {
+        switch (skill.damageType)
+        {
+            case DamageType.Weapon:
+                return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + CalculateWeaponDamage(weapon) * skill.skillEffectScaleValue[level]);
+            default:
+                switch (skill.skillEffectModifierStat)
+                {
+                    case StatType.Strength:
+                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + str * skill.skillEffectScaleValue[level]);
+                    case StatType.Dexterity:
+                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + dex * skill.skillEffectScaleValue[level]);
+                    case StatType.Constitution:
+                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + con * skill.skillEffectScaleValue[level]);
+                    case StatType.Knowledge:
+                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + kno * skill.skillEffectScaleValue[level]);
+                    case StatType.Wisdom:
+                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + wis * skill.skillEffectScaleValue[level]);
+                    case StatType.Luck:
+                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + luk * skill.skillEffectScaleValue[level]);
+                }
+                break;
+        }
+        return 0;
+    }
+
+    public bool IsSkillAvailable(Character character, int index)
+    {
+        if(index < 0 || index >= skillSet.Length)
+        {
+            Debug.LogError("Invalid skill index");
+            return false;
+        }
+
+        Skill skill = skillSet[index];
+        if (skill == null)
+        {
+            Debug.LogError("Skill not found");
+            return false;
+        }
+
+        switch (skill.skillTarget)
+        {
+            case SkillTarget.Self:
+                return this == character;
+            case SkillTarget.Enemy:
+                return IsAlly(character) == false;
+            case SkillTarget.Ally:
+                return IsAlly(character);
+            case SkillTarget.All:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public bool IsAlly(Character character)
+    {
+        switch (type)
+        {
+            case CharacterType.Player:
+                if (character.type == CharacterType.Player || character.type == CharacterType.Companion)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case CharacterType.Companion:
+                if (character.type == CharacterType.Player || character.type == CharacterType.Companion)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case CharacterType.Enemy:
+                if (character.type == CharacterType.Enemy)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            default:
+                return false;
+        }
+    }
+
+    public void TakeHeal(int heal)
+    {
+        currentHp += heal;
+        if (currentHp > hp)
+        {
+            currentHp = hp;
+        }
+        UpdateHpSlider();
+    }
+
+    public void TakeDamage(DamageType damageType, int damage)
+    {
+        switch (damageType)
+        {
+            case DamageType.Piercing:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(piercingResistance)));
+                break;
+            case DamageType.Blunt:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(bluntResistance)));
+                break;
+            case DamageType.Slashing:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(slashingResistance)));
+                break;
+            case DamageType.Fire:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(fireResistance)));
+                break;
+            case DamageType.Lightning:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(lightningResistance)));
+                break;
+            case DamageType.Ice:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(iceResistance)));
+                break;
+            case DamageType.Shock:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(shockResistance)));
+                break;
+            case DamageType.Holy:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(holyResistance)));
+                break;
+            case DamageType.Dark:
+                damage = Mathf.RoundToInt(damage * (GetDamagePercentAfterResistance(darkResistance)));
+                break;
+            case DamageType.None:
+                break;
+        }
+        currentHp -= damage;
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            Die();
+        }
+        UpdateHpSlider();
+    }
+
+    public float GetDamagePercentAfterResistance(Resistance resistance)
+    {
+        switch (resistance)
+        {
+            case Resistance.Weak:
+                return 1.5f;
+            case Resistance.Normal:
+                return 1f;
+            case Resistance.Strong:
+                return 0.5f;
+            case Resistance.Immune:
+                return 0f;
+            default:
+                return 1f;
+        }
+    }
+
+    public void TakeMPDamage(int damage)
+    {
+        currentMp -= damage;
+        if (currentMp <= 0)
+        {
+            currentMp = 0;
+        }
+        UpdateMpSlider();
+    }
+
+    public void TakeAPDamage(int damage)
+    {
+        currentActionPoint -= damage;
+        if (currentActionPoint <= 0)
+        {
+            currentActionPoint = 0;
+        }
+        UpdateApSlider();
+    }
+    public void Die()
+    {
+        status = CharacterStatus.Dead;
+        tileUnderCharacter.RemoveCharacterFromTile();
+        tileUnderCharacter = null;
+        gameObject.SetActive(false);
     }
 }

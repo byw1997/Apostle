@@ -94,10 +94,13 @@ public class BattleManager : MonoBehaviour
         switch (nextMode)
         {
             case BattleInputMode.Deploy:
+                battleInputHandler.UnShowSkillPreview();
                 break;
             case BattleInputMode.Idle:
+                battleInputHandler.UnShowSkillPreview();
                 break;
             case BattleInputMode.Move:
+                battleInputHandler.UnShowSkillPreview();
                 selectedSkill = -1;
                 battleInputHandler.CalculateMovable();
                 break;
@@ -139,6 +142,7 @@ public class BattleManager : MonoBehaviour
                 Tile tile = tilemapManager.tileMap[enemyGroupData.enemyPosList[i]];
                 GameObject enemyInstance = Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity);
                 tile.Deploy(enemyInstance);
+                enemyInstance.GetComponent<Enemy>().InitializeBattle();
                 charactersOnBattle.Add(enemyInstance.GetComponent<Character>());
             }
             else
@@ -181,6 +185,12 @@ public class BattleManager : MonoBehaviour
         }
         battleInputHandler.EndTurn();
         currentCharacter = charactersOnBattle[currentCharacterIndex];
+        while(currentCharacter.status == CharacterStatus.Dead)
+        {
+            currentCharacterIndex++;
+            currentCharacterIndex %= charactersOnBattle.Count;
+            currentCharacter = charactersOnBattle[currentCharacterIndex];
+        }
         currentCharacter.InitializeTurn();
         uiManager.UpdateUI(currentCharacter);
         currentCharacterIndex++;
@@ -188,6 +198,10 @@ public class BattleManager : MonoBehaviour
         if (currentCharacter.GetComponent<Player>() != null || currentCharacter.GetComponent<Companion>() != null)
         {
             Transition(BattleInputMode.Move);
+        }
+        else
+        {
+            Transition(BattleInputMode.Idle);
         }
     }
 
@@ -213,4 +227,9 @@ public class BattleManager : MonoBehaviour
         Transition(BattleInputMode.Move);
     }
 
+    public void RemoveCharacterFromBattle(Character character)
+    {
+        charactersOnBattle.Remove(character);
+        
+    }
 }

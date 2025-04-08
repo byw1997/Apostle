@@ -5,6 +5,18 @@ using UnityEditorInternal;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
+public enum StatType
+{
+    Strength,
+    Dexterity,
+    Constitution,
+    Knowledge,
+    Wisdom,
+    Luck,
+    Weapon,
+    None
+}
+
 public enum SkillType
 {
     Active,
@@ -93,6 +105,7 @@ public class Skill : ScriptableObject
     public int[] skillAreaRanges;
     public DamageType damageType;
     public float[] skillEffectBaseValue;
+    public StatType skillEffectModifierStat;
     public float[] skillEffectScaleValue;
     public float[] skillEffectDuration;
     public float[] skillEffectChance;

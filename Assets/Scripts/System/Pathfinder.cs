@@ -118,7 +118,7 @@ public class Pathfinder
             case SkillRangeType.Circle:
                 return CalculateCircleRange(startPos, range);
             case SkillRangeType.Weapon:
-                switch(character.MainHandweapon.rangeType)
+                switch(character.mainHandWeapon.rangeType)
                 {
                     case RangeType.Orthogonal:
                         directions = orthogonalDirections;

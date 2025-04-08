@@ -185,16 +185,19 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                 {
                     skillUI.transform.position = Input.mousePosition;
                     ShowSkillPreview();
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        Debug.Log("Clicked On Tile" + tile.gridPos);
+                        battleManager.currentCharacter.UseSkill(tile, battleManager.selectedSkill);
+                        EmptyCache();
+                    }
                 }
                 else
                 {
                     UnShowSkillPreview();
                 }
 
-                if (Input.GetMouseButtonDown(0))
-                {
-
-                }
             }
         }
 
@@ -221,8 +224,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         if (tile && tile.objectOnTile)
         {
             Character characterOnTile = tile.objectOnTile.GetComponent<Character>();
-            Debug.Log(skill.skillTarget);
-            Debug.Log(characterOnTile);
 
             if (characterOnTile != null)
             {
@@ -296,6 +297,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                 if (tile && cachedReachableTiles.ContainsKey(tile.gridPos))
                 {
                     MoveCurrentCharacter(tile, cachedReachableTiles[tile.gridPos]);
+                    EmptyCache();
                 }
             }
         }

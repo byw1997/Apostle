@@ -28,6 +28,7 @@ public class SkillEditor : Editor
         EditorGUILayout.LabelField("Skill Effects", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("damageType"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectBaseValue"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectModifierStat"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectScaleValue"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectDuration"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectChance"));

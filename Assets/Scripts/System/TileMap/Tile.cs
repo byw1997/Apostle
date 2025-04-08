@@ -179,4 +179,12 @@ public class Tile : MonoBehaviour
         characterComponent.tileUnderCharacter = this;
     }
 
+    public void RemoveCharacterFromTile()
+    {
+        if (objectOnTile != null)
+        {
+            objectOnTile = null;
+        }
+    }
+
 }

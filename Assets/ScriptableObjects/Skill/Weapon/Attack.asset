@@ -29,6 +29,7 @@ MonoBehaviour:
   damageType: 0
   skillEffectBaseValue:
   - 0
+  skillEffectModifierStat: 6
   skillEffectScaleValue:
   - 1
   skillEffectDuration: []
