@@ -99,6 +99,7 @@ public class Skill : ScriptableObject
     public SkillRangeType skillRangeType;
     public int[] skillRanges;
     public CustomRange[] customRanges;
+    public int[] accuracy;
     public SkillEffectType skillEffectType;
     public SkillTargetType skillTargetType;
     public SkillAreaType skillAreaType;

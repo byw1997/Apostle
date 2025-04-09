@@ -39,7 +39,12 @@ public enum ClassType
     None
 }
 
-
+public enum SkillHitType
+{
+    Hit,
+    CriticalHit,
+    Miss
+}
 
 public enum CharacterStatus
 {
@@ -227,7 +232,6 @@ public class Character : MonoBehaviour, IDamageable
 
     public void UseSkill(Tile tile, int index)
     {
-        Debug.Log("Using skill: " + skillSet[index].skillName);
         Skill skill = skillSet[index];
         switch (skill.skillTargetType)
         {
@@ -239,7 +243,6 @@ public class Character : MonoBehaviour, IDamageable
                     {
                         if (IsSkillCostSufficient(index))
                         {
-                            Debug.Log("Skill cost is sufficient");
                             TakeDamage(DamageType.None, skillSet[index].skillHPCost[skillLevel[index]]);
                             TakeMPDamage(skillSet[index].skillMPCost[skillLevel[index]]);
                             TakeAPDamage(skillSet[index].skillAPCost[skillLevel[index]]);
@@ -287,18 +290,18 @@ public class Character : MonoBehaviour, IDamageable
         status = CharacterStatus.Idle;
     }
 
-    IEnumerator ActivateSkill(Character character, int index)
+    IEnumerator ActivateSkill(Character character, int index)//Add animation
     {
         Skill skill = skillSet[index];
+        BattleManager.Instance.OutLogMessage(this.characterName + " used " + skill.skillName + " on " + character.characterName + ".\n");
+        int skillEffectAmount = CalculateSkillEffectAmount(mainHandWeapon, skill, skillLevel[index]);
         switch (skill.skillEffectType)
         {
             case SkillEffectType.Damage:
-                // Implement damage logic here
-                character.TakeDamage(skill.damageType, CalculateSkillEffectAmount(mainHandWeapon, skill, skillLevel[index]));
+                character.TakeDamage(skill.damageType, skillEffectAmount);
                 break;
             case SkillEffectType.Heal:
-                // Implement heal logic here
-                character.TakeHeal(CalculateSkillEffectAmount(mainHandWeapon, skill, skillLevel[index]));
+                character.TakeHeal(skillEffectAmount);
                 break;
             case SkillEffectType.Buff:
                 break;
@@ -329,29 +332,95 @@ public class Character : MonoBehaviour, IDamageable
 
     public int CalculateSkillEffectAmount(Weapon weapon, Skill skill, int level)
     {
+        int baseDamage = 0;
+        SkillHitType hitType = CalculateAccuracy(weapon, skill, level);
+        switch (hitType)
+        {
+            case SkillHitType.CriticalHit:
+                BattleManager.Instance.OutLogMessage("Critical hit!");
+                baseDamage = weapon.maximumDamage + (int)skill.skillEffectBaseValue[level];
+                break;
+            case SkillHitType.Miss:
+                BattleManager.Instance.OutLogMessage("Miss!");
+                baseDamage = (int)skill.skillEffectBaseValue[level];
+                break;
+            case SkillHitType.Hit:
+                BattleManager.Instance.OutLogMessage("Hit.");
+                baseDamage = (int)skill.skillEffectBaseValue[level];
+                break;
+            default:
+                baseDamage = (int)skill.skillEffectBaseValue[level]; 
+                break;
+        }
         switch (skill.damageType)
         {
             case DamageType.Weapon:
-                return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + CalculateWeaponDamage(weapon) * skill.skillEffectScaleValue[level]);
+                return Mathf.RoundToInt(GetHitTypeModifier(hitType) * (baseDamage + CalculateWeaponDamage(weapon) * skill.skillEffectScaleValue[level]));
             default:
-                switch (skill.skillEffectModifierStat)
-                {
-                    case StatType.Strength:
-                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + str * skill.skillEffectScaleValue[level]);
-                    case StatType.Dexterity:
-                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + dex * skill.skillEffectScaleValue[level]);
-                    case StatType.Constitution:
-                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + con * skill.skillEffectScaleValue[level]);
-                    case StatType.Knowledge:
-                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + kno * skill.skillEffectScaleValue[level]);
-                    case StatType.Wisdom:
-                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + wis * skill.skillEffectScaleValue[level]);
-                    case StatType.Luck:
-                        return Mathf.RoundToInt(skill.skillEffectBaseValue[level] + luk * skill.skillEffectScaleValue[level]);
-                }
-                break;
+                return Mathf.RoundToInt(GetHitTypeModifier(hitType) * (baseDamage + GetStatModifier(skill.skillEffectModifierStat) * skill.skillEffectScaleValue[level]));
         }
-        return 0;
+    }
+
+    public int GetStatModifier(StatType statType)
+    {
+        switch (statType)
+        {
+            case StatType.Strength:
+                return str;
+            case StatType.Dexterity:
+                return dex;
+            case StatType.Constitution:
+                return con;
+            case StatType.Knowledge:
+                return kno;
+            case StatType.Wisdom:
+                return wis;
+            case StatType.Luck:
+                return luk;
+            default:
+                return 0;
+        }
+    }
+
+    public float GetHitTypeModifier(SkillHitType hitType)
+    {
+        switch (hitType)
+        {
+            case SkillHitType.Miss:
+                return 0.5f;
+            default:
+                return 1f;
+        }
+    }
+
+    public SkillHitType CalculateAccuracy(Weapon weapon, Skill skill, int level)
+    {
+        int roll = Random.Range(0, 100);
+        switch (skill.damageType)
+        {
+            case DamageType.Weapon:
+                if (roll <= 5 + luk)
+                {
+                    return SkillHitType.CriticalHit;
+                }
+                else if (roll >= weapon.accuracy)
+                {
+                    return SkillHitType.Miss;
+                }
+                else
+                {
+                    return SkillHitType.Hit;
+                }
+            default:
+                if(roll < skill.accuracy[level])
+                {
+                    return SkillHitType.Hit;
+                }
+                else
+                {
+                    return SkillHitType.Miss;
+                }
+        }
     }
 
     public bool IsSkillAvailable(Character character, int index)
@@ -422,6 +491,11 @@ public class Character : MonoBehaviour, IDamageable
 
     public void TakeHeal(int heal)
     {
+        if (currentHp <= 0)
+        {
+            return;
+        }
+        BattleManager.Instance.OutLogMessage(this.characterName + " healed for " + heal + ".\n");
         currentHp += heal;
         if (currentHp > hp)
         {
@@ -465,6 +539,11 @@ public class Character : MonoBehaviour, IDamageable
                 break;
         }
         currentHp -= damage;
+        if(damage > 0)
+        {
+            BattleManager.Instance.OutLogMessage(this.characterName + " took " + damage + " damage.\n");
+        }
+        
         if (currentHp <= 0)
         {
             currentHp = 0;
@@ -511,6 +590,7 @@ public class Character : MonoBehaviour, IDamageable
     }
     public void Die()
     {
+        BattleManager.Instance.OutLogMessage(this.characterName + " died.\n");
         status = CharacterStatus.Dead;
         tileUnderCharacter.RemoveCharacterFromTile();
         tileUnderCharacter = null;

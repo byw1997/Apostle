@@ -1904,7 +1904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df092ced7209da4bab0fef5ff8f76ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: Player
   hp: 20
   currentHp: 0
   mp: 10

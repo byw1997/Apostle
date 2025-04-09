@@ -93,6 +93,11 @@ public class Pathfinder
 
     public Dictionary<Vector2Int, Node> CalculateSkillRange(Character character, int index)
     {
+        if(index < 0)
+        {
+            Debug.LogError("Invalid skill index");
+            return null;
+        }
         Vector2Int startPos = character.gridPos;
         Skill skill = character.skillSet[index];
         int level = character.skillLevel[index];

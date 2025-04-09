@@ -27,6 +27,10 @@ public class SkillEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillRanges"));
         EditorGUILayout.LabelField("Skill Effects", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("damageType"));
+        if(skill.damageType != DamageType.Weapon)
+        {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("accuracy"));
+        }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectBaseValue"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectModifierStat"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillEffectScaleValue"));

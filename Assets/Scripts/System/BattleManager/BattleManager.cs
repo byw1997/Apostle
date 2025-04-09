@@ -232,4 +232,9 @@ public class BattleManager : MonoBehaviour
         charactersOnBattle.Remove(character);
         
     }
+
+    public void OutLogMessage(string message)
+    {
+        uiManager.AddLog(message);
+    }
 }

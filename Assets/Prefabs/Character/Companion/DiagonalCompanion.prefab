@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ea97dca205db4418df6b33e7640d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: DiagonalCompanion
   hp: 30
   currentHp: 0
   mp: 20
