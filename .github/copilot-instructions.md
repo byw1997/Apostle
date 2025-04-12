@@ -2,7 +2,7 @@
 - Project name: Apostle
 - Unity version: Unity 6000.0.32f1
 - Active game object:
-  - Name: BattleManager
+  - Name: Player
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

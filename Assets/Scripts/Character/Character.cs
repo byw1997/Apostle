@@ -1,8 +1,16 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.TextCore.Text;
+
+
+
+#if UNITY_EDITOR
+using NUnit.Framework;
+using UnityEditor.Experimental.GraphView;
+#endif
+
 public enum CharacterType
 {
     Player,
@@ -230,12 +238,13 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
-    public void UseSkill(Tile tile, int index)
+    public void UseSkill(Tile tile, int index, Dictionary<Vector2Int, Pathfinder.Node> skillArea)
     {
         Skill skill = skillSet[index];
-        switch (skill.skillTargetType)
+        int level = skillLevel[index];
+        switch (skill)
         {
-            case SkillTargetType.Single:
+            case TargetingSingleSkill:
                 if (tile.objectOnTile != null)
                 {
                     Character character = tile.objectOnTile.GetComponent<Character>();
@@ -243,16 +252,44 @@ public class Character : MonoBehaviour, IDamageable
                     {
                         if (IsSkillCostSufficient(index))
                         {
-                            TakeDamage(DamageType.None, skillSet[index].skillHPCost[skillLevel[index]]);
-                            TakeMPDamage(skillSet[index].skillMPCost[skillLevel[index]]);
-                            TakeAPDamage(skillSet[index].skillAPCost[skillLevel[index]]);
+                            TakeDamage(DamageType.None, skill.skillHPCost[level]);
+                            TakeMPDamage(skill.skillMPCost[level]);
+                            TakeAPDamage(skill.skillAPCost[level]);
                             StartCoroutine(UseSkillOnTarget(character, index));
                         }
                     }
                 }
                 break;
-            case SkillTargetType.Multiple:
+            default:
+                AOESkill aoeSkill = skill as AOESkill;
                 // Implement area skill logic here
+                if (IsSkillCostSufficient(index))
+                {
+                    TakeDamage(DamageType.None, skill.skillHPCost[level]);
+                    TakeMPDamage(skill.skillMPCost[level]);
+                    TakeAPDamage(skill.skillAPCost[level]);
+                }
+                else
+                {
+                    return;
+                }
+                List<Character> charactersOnEffect = new List<Character>();
+                foreach (var pos in skillArea)
+                {
+                    Tile targetTile = TilemapManager.tileMap[pos.Key];
+                    if (targetTile.objectOnTile != null)
+                    {
+                        Character character = targetTile.objectOnTile.GetComponent<Character>();
+                        if (character != null)
+                        {
+                            if(IsSkillAvailable(character, index, true))
+                            {
+                                charactersOnEffect.Add(character);
+                            }
+                        }
+                    }
+                }
+                StartCoroutine(UseAreaSkill(tile, index, charactersOnEffect));
                 break;
         }
 
@@ -277,11 +314,27 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
+    IEnumerator UseAreaSkill(Tile tile, int index, List<Character> charactersOnEffect)
+    {
+        status = CharacterStatus.Casting;
+        Skill skill = skillSet[index];
+        BattleManager.Instance.OutLogMessage(this.characterName + " used " + skill.skillName + " on " + tile.gridPos + ".\n");
+        // Implement the logic to use the area skill
+        //Animation
+        foreach (Character character in charactersOnEffect)
+        {
+            yield return StartCoroutine(ActivateSkill(character, index));
+        }
+        status = CharacterStatus.Idle;
+    }
+
     IEnumerator UseSkillOnTarget(Character character, int index)
     {
         status = CharacterStatus.Casting;
+        Skill skill = skillSet[index];
+        BattleManager.Instance.OutLogMessage(this.characterName + " used " + skill.skillName + " on " + character.characterName + ".\n");
         // Implement the logic to use the skill on the target
-        if(IsSkillAvailable(character, index) == false)
+        if (IsSkillAvailable(character, index) == false)
         {
             Debug.Log("Skill not available");
             yield break;
@@ -293,7 +346,6 @@ public class Character : MonoBehaviour, IDamageable
     IEnumerator ActivateSkill(Character character, int index)//Add animation
     {
         Skill skill = skillSet[index];
-        BattleManager.Instance.OutLogMessage(this.characterName + " used " + skill.skillName + " on " + character.characterName + ".\n");
         int skillEffectAmount = CalculateSkillEffectAmount(mainHandWeapon, skill, skillLevel[index]);
         switch (skill.skillEffectType)
         {
@@ -423,7 +475,7 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
-    public bool IsSkillAvailable(Character character, int index)
+    public bool IsSkillAvailable(Character character, int index, bool area = false)
     {
         if(index < 0 || index >= skillSet.Length)
         {
@@ -436,6 +488,19 @@ public class Character : MonoBehaviour, IDamageable
         {
             Debug.LogError("Skill not found");
             return false;
+        }
+        if (area)
+        {
+            AOESkill aoeSkill = skill as AOESkill;
+            switch (aoeSkill.skillAreaEffectedType)
+            {
+                case SkillAreaEffectedType.Ally:
+                    return IsAlly(character);
+                case SkillAreaEffectedType.Enemy:
+                    return IsAlly(character) == false;
+                case SkillAreaEffectedType.All:
+                    return true;
+            }
         }
 
         switch (skill.skillTarget)

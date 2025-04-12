@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a374dfd7ff0284cacb84176121d38f, type: 3}
+  m_Name: TestDarkAOE
+  m_EditorClassIdentifier: 
+  skillID: 56464
+  skillName: TestDarkCustomRange
+  skillHPCost: 000000000000000000000000
+  skillMPCost: 010000000200000003000000
+  skillAPCost: 020000000300000004000000
+  skillType: 0
+  skillTarget: 3
+  skillRangeType: 2
+  usedBySubWeapon: 0
+  skillRanges: 060000000700000008000000
+  accuracy: 32000000370000003c000000
+  skillEffectType: 0
+  skillTargetType: 1
+  damageType: 9
+  skillEffectBaseValue:
+  - 25
+  - 35
+  - 45
+  skillEffectModifierStat: 3
+  skillEffectScaleValue:
+  - 2
+  - 3
+  - 4
+  skillEffectDuration: []
+  skillEffectChance: []
+  effectID: 0
+  skillDescription: 
+  FlavourText: 
+  skillIcon: {fileID: 0}
+  skillAreaRanges: 
+  skillAreaType: 3
+  skillAreaEffectedType: 1
+  customRanges:
+  - tilePositions:
+    - {x: 0, y: 0}
+    - {x: -1, y: -1}
+    - {x: 0, y: -2}
+    - {x: 1, y: -1}
+    - {x: 2, y: 0}
+    - {x: 1, y: 1}
+    - {x: 0, y: 2}
+    - {x: -1, y: 1}
+    - {x: -2, y: 0}
+  - tilePositions:
+    - {x: 0, y: 0}
+    - {x: -1, y: -1}
+    - {x: 0, y: -2}
+    - {x: 1, y: -1}
+    - {x: 2, y: 0}
+    - {x: 1, y: 1}
+    - {x: 0, y: 2}
+    - {x: -1, y: 1}
+    - {x: -2, y: 0}
+    - {x: -2, y: -2}
+    - {x: 2, y: -2}
+    - {x: -2, y: 2}
+    - {x: 2, y: 2}
+  - tilePositions:
+    - {x: 0, y: 0}
+    - {x: -1, y: -1}
+    - {x: 0, y: -2}
+    - {x: 1, y: -1}
+    - {x: 2, y: 0}
+    - {x: 1, y: 1}
+    - {x: 0, y: 2}
+    - {x: -1, y: 1}
+    - {x: -2, y: 0}
+    - {x: -2, y: -2}
+    - {x: 2, y: -2}
+    - {x: 2, y: 2}
+    - {x: -2, y: 2}
+    - {x: -1, y: 3}
+    - {x: 1, y: 3}
+    - {x: 0, y: 4}
+    - {x: -3, y: 1}
+    - {x: -3, y: -1}
+    - {x: -4, y: 0}
+    - {x: -1, y: -3}
+    - {x: 1, y: -3}
+    - {x: 0, y: -4}
+    - {x: 3, y: -1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 0}

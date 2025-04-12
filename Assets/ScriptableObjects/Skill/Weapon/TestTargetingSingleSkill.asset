@@ -9,23 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f2ae6fcc67dfc54c831f5cdac1bcbc5, type: 3}
-  m_Name: Attack
+  m_Script: {fileID: 11500000, guid: 9795e20ce4c0e5b4db29ab6d4fef27b2, type: 3}
+  m_Name: TestTargetingSingleSkill
   m_EditorClassIdentifier: 
-  skillID: 0
-  skillName: Normal Attack
+  skillID: 1111
+  skillName: TestNormalAttack
   skillHPCost: 00000000
   skillMPCost: 00000000
-  skillAPCost: 03000000
+  skillAPCost: 02000000
   skillType: 0
   skillTarget: 2
   skillRangeType: 3
-  skillRanges: 01000000
-  customRanges: []
+  usedBySubWeapon: 0
+  skillRanges: 
+  accuracy: 
   skillEffectType: 0
   skillTargetType: 0
-  skillAreaType: 4
-  skillAreaRanges: 
   damageType: 0
   skillEffectBaseValue:
   - 0

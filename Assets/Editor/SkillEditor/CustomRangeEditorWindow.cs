@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CustomRangeEditorWindow : EditorWindow
 {
-    private Skill skill;
+    private CustomAOESkill skill;
     private Vector2Int selectedTile;
     private Vector2Int gridSize = new Vector2Int(5, 5); // 예시: 5x5 격자
     
@@ -13,7 +13,7 @@ public class CustomRangeEditorWindow : EditorWindow
     private CustomRange customRange;
     private int selectedElementIndex;
 
-    public static void Init(Skill skill, int elementIndex)
+    public static void Init(CustomAOESkill skill, int elementIndex)
     {
         CustomRangeEditorWindow window = GetWindow<CustomRangeEditorWindow>("Custom Range Editor");
         window.skill = skill;

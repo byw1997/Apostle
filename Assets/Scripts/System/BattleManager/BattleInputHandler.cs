@@ -1,9 +1,11 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using TMPro;
+#if UNITY_EDITOR
+using NUnit.Framework;
+#endif
 
 public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 {
@@ -48,7 +50,7 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
     void Awake()
     {
         battleManager = GetComponent<BattleManager>();
-        pathfinder = new Pathfinder(tilemapManager.tileMap);
+        pathfinder = new Pathfinder(TilemapManager.tileMap);
     }
 
     public void HandleInput(BattleInputMode currentMode)
@@ -157,7 +159,14 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         CalculateSkillRange(battleManager.currentCharacter, battleManager.selectedSkill);
         SelectSkillByShortcut();
 
-        
+        if (battleManager.selectedSkill < 0 || cachedSkillRanges[battleManager.selectedSkill] == null)
+        {
+            return;
+        }
+
+        ShowSkillPreview();
+
+
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -181,21 +190,29 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                 {
                     return;
                 }
-                if (IsSkillAvailableForPlayer(tile, battleManager.currentCharacter.skillSet[battleManager.selectedSkill]))
+                Skill skill = battleManager.currentCharacter.skillSet[battleManager.selectedSkill];
+                int level = battleManager.currentCharacter.skillLevel[battleManager.selectedSkill];
+                if (IsSkillAvailableForPlayer(tile, skill))
                 {
                     skillUI.transform.position = Input.mousePosition;
-                    ShowSkillPreview();
+                    ShowSkillUI();
+                    Dictionary<Vector2Int, Pathfinder.Node> skillArea = null;
+                    if (skill is AOESkill aoeSkill)
+                    {
+                        skillArea = pathfinder.CalculateSkillArea(tile, aoeSkill, level);
+                        ShowSkillAreaPreview(skillArea);
+                    }
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Debug.Log("Clicked On Tile" + tile.gridPos);
-                        battleManager.currentCharacter.UseSkill(tile, battleManager.selectedSkill);
+                        battleManager.currentCharacter.UseSkill(tile, battleManager.selectedSkill, skillArea);
                         EmptyCache();
+                        battleManager.Transition(BattleInputMode.Move);
                     }
                 }
                 else
                 {
-                    UnShowSkillPreview();
+                    UnShowSkillUI();
                 }
 
             }
@@ -203,16 +220,52 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
 
     }
 
-    public void ShowSkillPreview()//정보 표시 수정 필요
+    public void ShowSkillUI()//정보 표시 수정 필요
     {
         Skill skill = battleManager.currentCharacter.skillSet[battleManager.selectedSkill];
         skillUI.text = skill.skillName;
         skillUI.gameObject.SetActive(true);
     }
 
-    public void UnShowSkillPreview()
+    public void UnShowSkillUI()
     {
         skillUI.gameObject.SetActive(false);
+    }
+
+    public void ShowSkillPreview()
+    {
+        Skill skill = battleManager.currentCharacter.skillSet[battleManager.selectedSkill];
+        switch (skill)
+        {
+            case TargetingSingleSkill:
+                foreach(var tile in cachedSkillRanges[battleManager.selectedSkill])
+                {
+                    if(IsSkillAvailableForPlayer(TilemapManager.tileMap[tile.Key], skill))
+                    {
+                        tilemapManager.HighlightTile(tile.Key, BattleInputMode.Skill, true);
+                    }
+                    else
+                    {
+                        tilemapManager.HighlightTile(tile.Key, BattleInputMode.Skill, false);
+                    }
+                }
+                break;
+            //Case for TargetingAreaSkill
+            default:
+                foreach(var tile in cachedSkillRanges[battleManager.selectedSkill])
+                {
+                    tilemapManager.HighlightTile(tile.Key, BattleInputMode.Skill, false);
+                }
+                break;
+        }
+    }
+
+    public void ShowSkillAreaPreview(Dictionary<Vector2Int, Pathfinder.Node> skillArea)
+    {
+        foreach (var pos in skillArea)
+        {
+            tilemapManager.HighlightTile(pos.Key, BattleInputMode.Skill, true);
+        }
     }
 
     public bool IsSkillAvailableForPlayer(Tile tile, Skill skill)
@@ -221,7 +274,11 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             return false;
         }
-        if (tile && tile.objectOnTile)
+        if(skill.skillTarget == SkillTarget.All)
+        {
+            return true;
+        }
+        else if (tile && tile.objectOnTile)
         {
             Character characterOnTile = tile.objectOnTile.GetComponent<Character>();
 
@@ -236,10 +293,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
                     return true;
                 }
                 else if (skill.skillTarget == SkillTarget.Enemy && characterOnTile is Enemy)
-                {
-                    return true;
-                }
-                else if (skill.skillTarget == SkillTarget.All)
                 {
                     return true;
                 }
@@ -262,7 +315,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         Dictionary<Vector2Int, Pathfinder.Node> skillRange = null;
         
         skillRange = pathfinder.CalculateSkillRange(character, index);
-        Assert.IsNotNull(skillRange);
         cachedSkillRanges[index] = skillRange;
         tilemapManager.HighlightAll(BattleInputMode.Skill, skillRange);
     }
@@ -281,9 +333,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         {
             return;
         }
-        
-        Assert.IsNotNull(cachedReachableTiles);
-
 
 
         if (Input.GetMouseButtonDown(0))
@@ -312,7 +361,6 @@ public class BattleInputHandler : MonoBehaviour, IInputHandler<BattleInputMode>
         }
         Dictionary<Vector2Int, Pathfinder.Node> reachableTiles = null;
         reachableTiles = pathfinder.CalculateMoveRange(battleManager.currentCharacter, battleManager.currentCharacter.moveType);
-        Assert.IsNotNull(reachableTiles);
         cachedReachableTiles = reachableTiles;
         tilemapManager.HighlightAll(BattleInputMode.Move, reachableTiles);
     }

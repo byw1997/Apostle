@@ -1,5 +1,7 @@
-using NUnit.Framework;
 using UnityEngine;
+#if UNITY_EDITOR
+using NUnit.Framework;
+#endif
 
 public class Enemy : Character
 {

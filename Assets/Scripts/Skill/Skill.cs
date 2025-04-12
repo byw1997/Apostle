@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditorInternal;
+#endif
 
 public enum StatType
 {
@@ -23,7 +25,7 @@ public enum SkillType
     Passive
 }
 
-public enum SkillTarget
+public enum SkillTarget//Skill Targeting.
 {
     Self,
     Ally,
@@ -31,7 +33,7 @@ public enum SkillTarget
     All
 }
 
-public enum SkillRangeType
+public enum SkillRangeType//Skill Range Calculated by
 {
     Orthogonal,
     Diagonal,
@@ -39,7 +41,7 @@ public enum SkillRangeType
     Weapon
 }
 
-public enum SkillTargetType
+public enum SkillTargetType//Skill Target numbers
 {
     Single,
     Multiple
@@ -53,6 +55,12 @@ public enum SkillEffectType
     Debuff
 }
 
+public enum SkillAreaEffectedType
+{
+    Ally,
+    Enemy,
+    All
+}
 
 
 public enum SkillAreaType
@@ -85,8 +93,7 @@ public class CustomRange
     public List<Vector2Int> tilePositions = new List<Vector2Int>();
 }
 
-[CreateAssetMenu(fileName = "Skill", menuName = "Scriptable Objects/Skill")]
-public class Skill : ScriptableObject
+public class Skill : ScriptableObject//ReFacture - TargetingSingleSkill, TargetingAreaSkill, AOESkill
 {
     [Header("Skill Info")]
     public int skillID;
@@ -94,16 +101,14 @@ public class Skill : ScriptableObject
     public int[] skillHPCost;
     public int[] skillMPCost;
     public int[] skillAPCost;
-    public SkillType skillType;
+    public SkillType skillType;//active or passive
     public SkillTarget skillTarget;
     public SkillRangeType skillRangeType;
+    public bool usedBySubWeapon;
     public int[] skillRanges;
-    public CustomRange[] customRanges;
     public int[] accuracy;
-    public SkillEffectType skillEffectType;
-    public SkillTargetType skillTargetType;
-    public SkillAreaType skillAreaType;
-    public int[] skillAreaRanges;
+    public SkillEffectType skillEffectType;//Damage, Heal, Buff, Debuff
+    public SkillTargetType skillTargetType;//Single Target or Multiple Target
     public DamageType damageType;
     public float[] skillEffectBaseValue;
     public StatType skillEffectModifierStat;
@@ -115,12 +120,6 @@ public class Skill : ScriptableObject
     public string FlavourText;
     public Sprite skillIcon;
 
-    private void OnEnable()
-    {
-        if (customRanges == null)
-        {
-            customRanges = new CustomRange[0];
-        }
-    }
+    
 }
 

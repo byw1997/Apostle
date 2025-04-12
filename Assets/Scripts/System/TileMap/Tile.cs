@@ -66,7 +66,7 @@ public class Tile : MonoBehaviour
         Debug.Log(InformationToString());
     }
 
-    public void Highlight(BattleInputMode bMode)
+    public void Highlight(BattleInputMode bMode, bool isOnEffect = true)
     {
         switch (bMode)
         {
@@ -83,7 +83,14 @@ public class Tile : MonoBehaviour
             case BattleInputMode.Idle:
                 break;
             case BattleInputMode.Skill:
-                HighlightMovable();
+                if (isOnEffect)
+                {
+                    HighlightNonMovable();
+                }
+                else
+                {
+                    HighlightMovable();
+                }
                 break;
             case BattleInputMode.Move:
                 if (movable && objectOnTile == null)

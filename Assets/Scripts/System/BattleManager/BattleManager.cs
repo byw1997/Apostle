@@ -94,13 +94,13 @@ public class BattleManager : MonoBehaviour
         switch (nextMode)
         {
             case BattleInputMode.Deploy:
-                battleInputHandler.UnShowSkillPreview();
+                battleInputHandler.UnShowSkillUI();
                 break;
             case BattleInputMode.Idle:
-                battleInputHandler.UnShowSkillPreview();
+                battleInputHandler.UnShowSkillUI();
                 break;
             case BattleInputMode.Move:
-                battleInputHandler.UnShowSkillPreview();
+                battleInputHandler.UnShowSkillUI();
                 selectedSkill = -1;
                 battleInputHandler.CalculateMovable();
                 break;
@@ -139,7 +139,7 @@ public class BattleManager : MonoBehaviour
             GameObject enemyPrefab = GetEnemyPrefabByID(enemyGroupData.enemyIdList[i]);
             if (enemyPrefab != null)
             {
-                Tile tile = tilemapManager.tileMap[enemyGroupData.enemyPosList[i]];
+                Tile tile = TilemapManager.tileMap[enemyGroupData.enemyPosList[i]];
                 GameObject enemyInstance = Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity);
                 tile.Deploy(enemyInstance);
                 enemyInstance.GetComponent<Enemy>().InitializeBattle();
@@ -213,6 +213,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            if (currentCharacter.skillSet[i] == null) return;
             selectedSkill = i;
             if (selectedSkill != -1)
             {

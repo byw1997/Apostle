@@ -1935,13 +1935,13 @@ MonoBehaviour:
   mainClass: 0
   subClass: 4
   skillSet:
-  - {fileID: 11400000, guid: 3388d5aac0ffbe247b8bd2ae60119f0e, type: 2}
-  - {fileID: 11400000, guid: 0692aa0f509bedf4c9bf675110ec3160, type: 2}
+  - {fileID: 11400000, guid: 00cb8290b2c09da429edb13b9fe64aee, type: 2}
+  - {fileID: 11400000, guid: e98b5583ca089584a9cb21ba65c6f4a7, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  skillLevel: 000000000000000000000000000000000000000000000000
+  skillLevel: 000000000200000000000000000000000000000000000000
   acquiredSkills: 
   helmet: {fileID: 0}
   armor: {fileID: 0}

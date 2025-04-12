@@ -1,10 +1,12 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor.Experimental.GraphView;
+#endif
 
 public class TilemapManager : MonoBehaviour
 {
-    public Dictionary<Vector2Int, Tile> tileMap = new Dictionary<Vector2Int, Tile>();
+    public static Dictionary<Vector2Int, Tile> tileMap = new Dictionary<Vector2Int, Tile>();
 
     void Start()
     {
@@ -51,6 +53,14 @@ public class TilemapManager : MonoBehaviour
                     }
                 }
                 break;
+        }
+    }
+
+    public void HighlightTile(Vector2Int gridPos, BattleInputMode bMode, bool isOnEffect = false)
+    {
+        if (tileMap.ContainsKey(gridPos))
+        {
+            tileMap[gridPos].Highlight(bMode, isOnEffect);
         }
     }
 
