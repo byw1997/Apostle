@@ -1941,7 +1941,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  skillLevel: 000000000200000000000000000000000000000000000000
+  skillLevel: 000000000300000000000000000000000000000000000000
   acquiredSkills: 
   helmet: {fileID: 0}
   armor: {fileID: 0}

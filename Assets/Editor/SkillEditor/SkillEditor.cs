@@ -126,7 +126,6 @@ public class SkillEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("skillAreaType"));
         }
 
-        // SerializedObject ������Ʈ
         serializedObject.ApplyModifiedProperties();
     }
 }

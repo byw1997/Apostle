@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillID: 56464
   skillName: TestDarkCustomRange
-  skillHPCost: 000000000000000000000000
-  skillMPCost: 010000000200000003000000
-  skillAPCost: 020000000300000004000000
+  skillHPCost: 00000000000000000000000000000000
+  skillMPCost: 01000000020000000300000004000000
+  skillAPCost: 02000000030000000400000005000000
   skillType: 0
   skillTarget: 3
   skillRangeType: 2
   usedBySubWeapon: 0
-  skillRanges: 060000000700000008000000
-  accuracy: 32000000370000003c000000
+  skillRanges: 06000000070000000800000009000000
+  accuracy: 32000000370000003c00000041000000
   skillEffectType: 0
   skillTargetType: 1
   damageType: 9
@@ -30,11 +30,13 @@ MonoBehaviour:
   - 25
   - 35
   - 45
+  - 55
   skillEffectModifierStat: 3
   skillEffectScaleValue:
   - 2
   - 3
   - 4
+  - 5
   skillEffectDuration: []
   skillEffectChance: []
   effectID: 0
@@ -95,3 +97,17 @@ MonoBehaviour:
     - {x: 3, y: -1}
     - {x: 3, y: 1}
     - {x: 4, y: 0}
+  - tilePositions:
+    - {x: 0, y: 0}
+    - {x: 0, y: -1}
+    - {x: -1, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 0, y: -2}
+    - {x: -1, y: -1}
+    - {x: -2, y: 0}
+    - {x: -1, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 1}
+    - {x: 2, y: 0}
+    - {x: 1, y: -1}
